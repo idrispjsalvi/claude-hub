@@ -1,0 +1,6 @@
+{
+  "name": "idris-contenu",
+  "version": "1.0.0",
+  "description": "Veille IA et production de contenu d'Idris (LinkedIn, Substack) autour de la base Airtable Content Machine.",
+  "author": { "name": "Idris Salvi" }
+}

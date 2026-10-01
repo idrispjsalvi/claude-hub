@@ -1,0 +1,11 @@
+# Secrets : jamais versionnés
+**/.claude/settings.local.json
+.env
+.env.*
+**/*.key
+
+# Systeme et build
+.DS_Store
+__pycache__/
+*.pyc
+dist/

@@ -1,0 +1,14 @@
+{
+  "name": "claude-hub",
+  "owner": { "name": "Idris Salvi" },
+  "metadata": {
+    "description": "Le savoir-faire Claude d'IPJS Consulting, un plugin par domaine d'activité."
+  },
+  "plugins": [
+    {
+      "name": "idris-contenu",
+      "source": "./plugins/idris-contenu",
+      "description": "Veille IA et production de contenu (LinkedIn, Substack) via Airtable Content Machine."
+    }
+  ]
+}
