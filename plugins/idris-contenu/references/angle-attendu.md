@@ -1,6 +1,6 @@
 # C'est Idris qui parle : l'Angle attendu
 
-Référence commune aux skills de rédaction (`rediger-post-linkedin`, `rediger-substack`, et tout futur canal). `creer-ligne-content-machine` l'utilise pour écrire un Angle attendu qu'un skill de rédaction comprendra.
+Référence commune aux skills de rédaction (`rediger-post-linkedin`, `rediger-substack`, et tout futur canal). `affiner-angle` et `creer-ligne-content-machine` l'utilisent pour écrire un Angle attendu qu'un skill de rédaction comprendra.
 
 ## Principe n°1 : c'est Idris qui parle, pas Claude
 
@@ -24,16 +24,18 @@ Lire l'angle en cherchant ces trois choses, souvent mélangées dans une même p
 
 Ne rien ignorer de ce qui est écrit : chaque consigne se retrouve dans le texte, ou est signalée dans le résumé comme impossible à respecter (avec la raison).
 
-## Lire la ligne
+## Lire le dossier
 
-- **Angle attendu** : le brief, il prime sur tout le reste.
-- **Résumé IA** et **Analyse IA** : la source des faits, des chiffres, des limites. L'Analyse commence par une ligne "Reliability" (Confirmed, Partially confirmed, Unverified, Disputed) : en tenir compte dans la prudence des formulations.
-- **Source**, **Source URL**, **Date de la source** : pour citer la source quand ça renforce la crédibilité, et rester cohérent sur les dates ("yesterday", "this week", "last month").
+- **Angle attendu** (sur le dossier) : le brief, il prime sur tout le reste.
+- **Un angle qui renvoie aux Angles proposés** : Idris peut écrire seulement "A", "B" ou "B + ...". Reprendre alors l'angle proposé correspondant (champ Angles proposés du dossier) comme position d'Idris, et ajouter ce qu'il a écrit après. Comme Idris l'a choisi, l'angle proposé devient son avis : le défendre avec la force qu'il a dans sa formulation.
+- **En bref** : le fil qui relie les news. Il aide à structurer, ce n'est pas une source de faits.
+- **Les news liées** (table Content Machine) : **Résumé IA** et **Analyse IA** de chacune sont la source des faits, des chiffres et des limites. L'Analyse commence par une ligne "Reliability" (Confirmed, Partially confirmed, Unverified, Disputed) : en tenir compte dans la prudence des formulations. **Source**, **Source URL**, **Date de la source** servent à citer et à rester cohérent sur les dates ("yesterday", "this week").
+- Un dossier peut contenir plus de news qu'un texte ne peut en porter. L'angle décide lesquelles servent. Ne pas citer une news juste parce qu'elle est dans le dossier.
 
 ## Cas particuliers
 
-- **Angle vide** : ne pas bloquer. Écrire à partir du "Key takeaway" et de la lecture "Exploitable" de l'Analyse IA, dans la ligne éditoriale d'Idris, avec un avis mesuré (pas de position tranchée qu'il n'a pas prise), et le signaler dans le résumé pour qu'il vérifie.
+- **Angle vide** : ne pas bloquer. Écrire à partir du premier Angle proposé du dossier (ou, à défaut, du "Key takeaway" de l'Analyse IA de la news principale), dans la ligne éditoriale d'Idris, avec un avis mesuré (pas de position tranchée qu'il n'a pas prise), et le signaler dans le résumé pour qu'il vérifie.
 - **Angle très court** (quelques mots) : le développer à partir de l'Analyse IA (et de la recherche si elle a eu lieu), sans en changer le sens.
 - **L'angle va plus loin que les faits** (il veut affirmer ce que l'Analyse classe "Unverified") : suivre l'angle mais formuler avec la prudence que les faits autorisent ("if it holds", "reportedly", "according to X"), et le signaler dans le résumé. Un texte qui affirme un fait douteux abîmerait la crédibilité d'Idris auprès de ses clients.
-- **Deux lignes sur le même sujet** : signaler le recoupement dans le résumé, écrire deux angles distincts selon leurs Angles attendus.
-- **Plusieurs lignes à traiter** : une par une, chaque texte indépendant. Ne pas répéter la même accroche, la même structure ni les mêmes hashtags d'un texte à l'autre.
+- **Deux dossiers sur le même sujet** : signaler le recoupement dans le résumé, écrire deux angles distincts selon leurs Angles attendus.
+- **Plusieurs dossiers à traiter** : une par une, chaque texte indépendant. Ne pas répéter la même accroche, la même structure ni les mêmes hashtags d'un texte à l'autre.

@@ -1,13 +1,13 @@
 ---
 name: rediger-substack
-description: "Rédige en anglais la Note et l'Article Substack d'Idris (son avis, son ton) depuis les lignes Content Machine dont le Statut Substack est \"À générer\", en suivant l'Angle attendu, puis passe à \"À valider\". À utiliser dès qu'Idris parle de Substack, de Note Substack, d'Article Substack, de générer le contenu Substack, ou qu'une ligne a son Statut Substack à \"À générer\" (ou \"À généré\"), même s'il ne cite pas le skill."
+description: "Rédige en anglais la Note et l'Article Substack d'Idris (son avis, son ton) depuis les Dossiers de Content Machine dont le Statut Substack est \"À générer\", en suivant l'Angle attendu, puis passe à \"À valider\". À utiliser dès qu'Idris parle de Substack, de Note Substack, d'Article Substack, de générer le contenu Substack, ou qu'un dossier a son Statut Substack à \"À générer\" (ou \"À généré\"), même s'il ne cite pas le skill."
 ---
 
 # Rédaction des Notes et Articles Substack d'Idris
 
 ## Pourquoi ce skill existe
 
-Idris publie sur Substack en anglais, avec son ton personnel, direct et positif sur l'IA. Sa veille alimente la base Airtable **Content Machine** (une ligne par news). Il lit la veille, choisit les sujets qui l'intéressent, écrit lui-même l'**Angle attendu** (sa thèse, ce qu'il veut dire), puis passe le **Statut Substack** à "À générer". Ce skill prend le relais : pour chaque ligne, il produit deux contenus complémentaires, une **Note** (format court du fil Substack) et un **Article** (format long envoyé par email aux abonnés), qu'Idris n'aura presque plus qu'à relire et publier.
+Idris publie sur Substack en anglais, avec son ton personnel, direct et positif sur l'IA. Sa veille alimente la base Airtable **Content Machine** : des news, regroupées en **Dossiers** (un sujet éditorial chacun). Il lit les dossiers, en choisit un, écrit l'**Angle attendu** sur le dossier (parfois juste "A" ou "B + ..." pour reprendre un angle proposé), puis passe le **Statut Substack** à "À générer". Ce skill prend le relais : pour chaque dossier, il produit deux contenus complémentaires, une **Note** (format court du fil Substack) et un **Article** (format long envoyé par email aux abonnés), qu'Idris n'aura presque plus qu'à relire et publier.
 
 Le critère de réussite est simple : Idris lit le texte et pense "c'est moi qui l'ai écrit", pas "c'est une IA qui imite un blog". Et il doit pouvoir copier-coller le contenu dans Substack sans retoucher quoi que ce soit.
 
@@ -22,21 +22,26 @@ Lire ces références (chemins relatifs au dossier de ce skill). Elles font part
 - `../../references/angle-attendu.md` : Principe n°1 (c'est Idris qui parle ; dans un article long, l'envie d'étoffer avec des opinions maison est le piège principal), comment lire l'Angle attendu comme un brief, cas particuliers.
 - `../../references/partage/voix-idris.md` : la voix d'Idris. Exigence n°1 : parler à une personne, y compris dans l'Article.
 - `../../references/partage/regles-ecriture.md` : fiabilité, règles de recherche, typographie (aucun tiret cadratin), checklist anti-IA.
-- `../../references/content-machine.md` : identifiants de la base, champs, statuts et pièges, règles d'écriture.
+- `../../references/content-machine.md` : identifiants de la base, tables Dossiers et Content Machine, statuts et pièges, règles d'écriture.
+- `../../references/style-vivant.md` : charger les leçons validées et les dernières Notes et Articles publiés par Idris. Ils priment sur l'exemple de ce fichier.
+- `../../references/relecture.md` : construire chaque texte, puis se relire comme Idris avant d'écrire dans Airtable.
 
 Ce skill ne contient que ce qui est propre à Substack.
 
 ## Workflow
 
-### 1. Trouver les lignes à traiter
+### 1. Trouver les dossiers à traiter
 
-1. Appeler `get_table_schema` sur la table Content Machine pour retrouver, à partir de leurs noms, les identifiants des champs **Statut Substack**, **Note Substack**, **Article Substack** et l'identifiant du choix "À générer" de **Statut Substack**. Filtrer avec l'identifiant du champ **Statut Substack**, jamais celui de Statut LinkedIn (mêmes choix, voir `content-machine.md`).
-2. Lister les lignes dont le **Statut Substack** est "À générer" avec `list_records_for_table`, en demandant : Sujet, Résumé IA, Analyse IA, Source, Source URL, Date de la source, Angle attendu, Note Substack, Article Substack, Statut Substack.
-3. S'il n'y a aucune ligne "À générer", le dire simplement et s'arrêter. Si l'utilisateur a nommé une ligne précise (par son Sujet), ne traiter que celle-là, après avoir vérifié son statut.
+1. Appeler `get_table_schema` sur la table **Dossiers** pour retrouver, à partir de leurs noms, les identifiants des champs **Statut Substack**, **Note Substack**, **Article Substack** et l'identifiant du choix "À générer" de **Statut Substack**. Filtrer avec l'identifiant du champ **Statut Substack**, jamais celui de Statut LinkedIn (mêmes choix, voir `content-machine.md`).
+2. Lister les dossiers dont le **Statut Substack** est "À générer" avec `list_records_for_table`, en demandant : Dossier, En bref, Angles proposés, Angle attendu, News, Post LinkedIn, Note Substack, Article Substack, Statut Substack.
+3. Pour chaque dossier, lire ses news liées dans la table Content Machine (recordIds du champ News) : Sujet, Résumé IA, Analyse IA, Source, Source URL, Date de la source.
+4. S'il n'y a aucun dossier "À générer", le dire simplement et s'arrêter. Si l'utilisateur a nommé un dossier précis, ne traiter que celui-là, après avoir vérifié son statut.
+
+Puis, une fois par exécution, charger le style vivant comme décrit dans `style-vivant.md` (leçons validées des canaux Note, Article et Tous ; dernières versions publiées).
 
 ### 2. Lire l'angle, rassembler la matière, creuser
 
-Lire la ligne comme décrit dans `angle-attendu.md`.
+Lire le dossier comme décrit dans `angle-attendu.md`.
 
 **Recherche complémentaire** (règles dans `regles-ecriture.md`). Un article de 900 à 1 400 mots ne peut pas reposer sur trois lignes de résumé : il faut de la matière.
 
@@ -47,13 +52,13 @@ Les sources réellement consultées alimentent la section "Sources" de l'Article
 
 ### 3. Rédiger la Note, puis l'Article
 
-Suivre la voix d'Idris et les sections "La Note" et "L'Article" ci-dessous, puis passer la checklist anti-IA (`regles-ecriture.md`) et les points Substack plus bas. Une seule version de chaque (pas de variantes).
+Pour chacun des deux textes, suivre `relecture.md` dans l'ordre : colonne vertébrale, premier jet, relecture comme Idris, version finale. Appliquer les sections "La Note" et "L'Article" ci-dessous et les points Substack plus bas. Une seule version de chaque (pas de variantes).
 
-Rédiger la Note et l'Article comme deux pièces qui se complètent, pas comme un résumé et sa version longue : la Note frappe avec une idée, l'Article la démontre. Ne pas recopier des phrases de l'un dans l'autre.
+Rédiger la Note et l'Article comme deux pièces qui se complètent, pas comme un résumé et sa version longue : la Note frappe avec une idée, l'Article la démontre. **Leurs premières phrases sont différentes**, et différentes de celle du Post LinkedIn s'il existe déjà sur le dossier. Ne pas recopier des phrases de l'un dans l'autre.
 
 ### 4. Écrire dans Airtable
 
-Un seul appel `update_records_for_table` par ligne qui écrit **en même temps** :
+Un seul appel `update_records_for_table` par dossier qui écrit **en même temps** :
 
 - **Note Substack** : le texte de la Note, tel quel.
 - **Article Substack** : l'Article complet, tel quel.
@@ -63,15 +68,16 @@ Ne toucher à aucun autre champ. Règles d'écriture et de vérification : `cont
 
 ### 5. Vérifier
 
-Relire une ou deux lignes écrites : les deux textes non tronqués (surtout l'Article, long), retours à la ligne conservés, Statut Substack à "À valider".
+Relire un ou deux dossiers écrits : les deux textes non tronqués (surtout l'Article, long), retours à la ligne conservés, Statut Substack à "À valider".
 
 ### 6. Résumé dans le chat (en français, court)
 
-- Nombre de lignes traitées et leurs Sujets.
-- Pour chaque ligne, une phrase sur l'angle retenu si utile.
+- Nombre de dossiers traités et leurs titres.
+- Les leçons de style qui ont le plus pesé (une ligne).
+- Pour chaque dossier, une phrase sur l'angle retenu si utile.
 - Ce que la recherche a trouvé de déterminant, les sources consultées (nom et URL), et surtout ce qu'elle n'a pas pu confirmer ou ce qui contredit l'angle.
 - Les consignes de l'angle non respectées, et pourquoi.
-- Les points d'attention : angle vide, affirmation prudente à cause d'une info non confirmée, lignes non traitées et pourquoi.
+- Les points d'attention : angle vide, affirmation prudente à cause d'une info non confirmée, dossiers non traités et pourquoi.
 
 Ne pas recopier les textes dans le chat sauf demande : ils sont déjà dans Airtable.
 
@@ -105,6 +111,7 @@ Subtitle: <sous-titre>
 - **Title** : 6 à 12 mots, concret, qui donne le sujet ou la tension (pas de titre clickbait, pas de "Everything you need to know about"). Le titre reprend la position d'Idris quand c'est possible.
 - **Subtitle** : une phrase, qui complète le titre sans le répéter.
 - **Corps** : commence directement par l'accroche, sans "Introduction", sans répéter le titre.
+- **Intertitres** : toujours en `## ` en début de ligne, jamais en texte simple, pour que Substack les reconnaisse au collage.
 
 ### Longueur
 
@@ -171,6 +178,6 @@ If you follow AI news, ask yourself who benefits from the version you're reading
 
 ## Cas limites propres à Substack
 
-- **Plusieurs lignes "À générer"** : ne pas répéter la même accroche ni la même structure d'un article à l'autre.
-- **Post LinkedIn déjà généré sur la même ligne** : ne pas le lire pour le recopier ni le modifier. La Note et l'Article ont leur propre texte, plus posé que le post.
-- Les autres cas (angle vide, angle très court, angle qui contredit les faits, deux lignes sur le même sujet) sont décrits dans `angle-attendu.md` ; sujets sensibles et droit d'auteur dans `regles-ecriture.md`.
+- **Plusieurs dossiers "À générer"** : ne pas répéter la même accroche ni la même structure d'un article à l'autre.
+- **Post LinkedIn déjà généré sur le même dossier** : ne pas le lire pour le recopier ni le modifier. La Note et l'Article ont leur propre texte, plus posé que le post.
+- Les autres cas (angle vide, angle très court, angle qui contredit les faits, deux dossiers sur le même sujet) sont décrits dans `angle-attendu.md` ; sujets sensibles et droit d'auteur dans `regles-ecriture.md`.

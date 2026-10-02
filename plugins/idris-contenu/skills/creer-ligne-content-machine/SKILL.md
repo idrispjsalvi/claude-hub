@@ -1,19 +1,19 @@
 ---
 name: "creer-ligne-content-machine"
-description: "Crée dans Airtable Content Machine une ligne à partir d'un sujet perso (test d'outil, retour d'expérience, idée) qu'Idris raconte en conversation, prête pour rediger-post-linkedin ou rediger-substack."
+description: "Crée dans Airtable Content Machine une news et son Dossier à partir d'un sujet perso (test d'outil, retour d'expérience, idée) qu'Idris raconte en conversation, prête pour rediger-post-linkedin ou rediger-substack."
 ---
 
 # Créer une ligne Content Machine depuis une conversation
 
 ## Pourquoi ce skill existe
 
-La veille (skill `veille-ia`) alimente la base Content Machine avec des news trouvées par Claude. Mais Idris a aussi des sujets qui ne viennent pas de la veille : un outil qu'il a testé, une formation qu'il a donnée, une discussion avec un client, une idée. Ce skill transforme ce qu'il raconte en une ligne Airtable complète, au même format que les lignes de la veille, pour que `rediger-post-linkedin` puisse ensuite écrire le post.
+La veille (skill `veille-ia`) alimente la base Content Machine avec des news trouvées par Claude. Mais Idris a aussi des sujets qui ne viennent pas de la veille : un outil qu'il a testé, une formation qu'il a donnée, une discussion avec un client, une idée. Ce skill transforme ce qu'il raconte en une news Airtable complète, au même format que celles de la veille, et en un **Dossier** qui la porte (c'est sur le dossier que vivent l'Angle attendu, les statuts et les textes). `rediger-post-linkedin` et `rediger-substack` peuvent ensuite écrire.
 
 La différence clé avec la veille : ici, la matière vient d'Idris, pas du web. Claude structure et complète, il n'invente rien.
 
 ## Langue
 
-Ce skill est en français. Les valeurs écrites dans Airtable (Sujet, Résumé IA, Analyse IA, Source, Angle attendu) sont en **anglais**, comme pour la veille, parce qu'Idris publie en anglais. Les échanges dans le chat se font en français (ou dans la langue d'Idris).
+Ce skill est en français. Les valeurs écrites dans Airtable (Sujet, Résumé IA, Analyse IA, Source, titre du Dossier, En bref, Angle attendu) sont en **anglais**, comme pour la veille, parce qu'Idris publie en anglais. Les échanges dans le chat se font en français (ou dans la langue d'Idris).
 
 ## Avant de commencer
 
@@ -58,6 +58,8 @@ Privilégier les sources primaires (site officiel, page de tarifs, documentation
 
 ### 3. Rédiger les champs (en anglais)
 
+News (table Content Machine) :
+
 | Champ | Contenu |
 |---|---|
 | **Sujet** | Titre informatif, une ligne, qui dit de quoi il s'agit (par exemple "Idris tested X: what worked and what broke"). Pas de titre racoleur. |
@@ -66,7 +68,9 @@ Privilégier les sources primaires (site officiel, page de tarifs, documentation
 | **Source** | "Personal test" (test perso), "Personal experience", ou le nom de la source externe si c'est le sujet principal. |
 | **Source URL** | URL réellement consultée (site officiel de l'outil, article). Laisser vide s'il n'y en a pas, ne jamais en reconstruire une de mémoire. |
 | **Date de la source** | Champ date, format AAAA-MM-JJ : la date du jour pour un test ou une expérience récente, sinon la date réelle de la source. |
-| **Angle attendu** | La position d'Idris, écrite comme un brief pour les skills de rédaction (`rediger-post-linkedin`, `rediger-substack`, voir `angle-attendu.md`) : son avis, l'expérience vécue à mentionner explicitement ("I tested it for X days on Y", sinon le skill de rédaction n'écrira pas de vécu), les consignes de fond (recherches à faire) et de forme (ton, longueur, question finale) qu'il a données. Reprendre ses mots et l'intensité de son avis, sans l'adoucir ni le durcir. Le champ est en anglais, sauf mots qu'il veut garder en français. |
+| **Angle attendu** (sur le Dossier) | La position d'Idris, écrite comme un brief pour les skills de rédaction (`rediger-post-linkedin`, `rediger-substack`, voir `angle-attendu.md`) : son avis, l'expérience vécue à mentionner explicitement ("I tested it for X days on Y", sinon le skill de rédaction n'écrira pas de vécu), les consignes de fond (recherches à faire) et de forme (ton, longueur, question finale) qu'il a données. Reprendre ses mots et l'intensité de son avis, sans l'adoucir ni le durcir. Le champ est en anglais, sauf mots qu'il veut garder en français. |
+
+Dossier (table Dossiers) : **Dossier** (titre du sujet), **En bref** (2 ou 3 phrases), **News** (la news créée, plus des news existantes si Idris relie son test à une actualité de la base), **Dernière news** (Date de la source), **État** "Retenu", **Angle attendu** comme décrit dans le tableau. Laisser **Angles proposés** et **Priorité** vides : c'est le rôle de la veille, et ici l'angle vient d'Idris.
 
 La différence avec la veille : ici Claude remplit **Angle attendu**, parce que c'est Idris qui vient de dire son avis en conversation. Ce n'est pas un angle inventé par Claude.
 
@@ -76,17 +80,18 @@ Montrer à Idris un aperçu court de la ligne (Sujet, angle, points clés de l'A
 
 ### 5. Écrire dans Airtable
 
-1. Appeler `get_table_schema` sur la table pour retrouver les identifiants de champs et les choix des champs **Statut LinkedIn** et **Statut Substack** à partir de leurs noms.
-2. Avant de créer, chercher dans la table (recherche sur Sujet) si une ligne sur le même sujet existe déjà. Si oui, le dire à Idris et demander s'il veut mettre à jour la ligne existante ou en créer une nouvelle.
-3. Créer la ligne avec `create_records_for_table`. Une ligne par sujet.
-4. **Statuts** : mettre **Statut LinkedIn** et/ou **Statut Substack** à "À générer" seulement si Idris veut le contenu correspondant tout de suite (ou l'a demandé). Sinon les laisser vides.
-5. Ne remplir aucun autre champ (Post LinkedIn, Note Substack, Article Substack, Image Post LinkedIn, dates de publication, Lien du post). Les autres règles (champ manquant, choix manquant) sont dans `content-machine.md`.
+1. Appeler `get_table_schema` sur les tables Content Machine et Dossiers pour retrouver les identifiants de champs et les choix des champs **Statut LinkedIn**, **Statut Substack** et **État** (table Dossiers) à partir de leurs noms.
+2. Avant de créer, chercher (recherche sur Sujet dans Content Machine, et sur le titre parmi les dossiers récents) si le sujet existe déjà. Si oui, le dire à Idris et demander s'il veut compléter l'existant ou créer du neuf.
+3. Créer la news avec `create_records_for_table` dans la table Content Machine. Remplir seulement Sujet, Résumé IA, Analyse IA, Source, Source URL, Date de la source.
+4. Créer le dossier dans la table Dossiers, lié à la news.
+5. **Statuts** (sur le dossier) : mettre **Statut LinkedIn** et/ou **Statut Substack** à "À générer" seulement si Idris veut le contenu correspondant tout de suite (ou l'a demandé). Sinon les laisser vides.
+6. Ne remplir aucun autre champ (Post LinkedIn, Note Substack, Article Substack, Versions publiées, dates de publication, Lien du post). Les autres règles (champ manquant, choix manquant) sont dans `content-machine.md`.
 
 ### 6. Vérifier et conclure
 
-Relire la ligne créée pour vérifier que les champs longs ne sont pas tronqués et que les retours à la ligne sont conservés. Puis répondre en français, court :
+Relire la news et le dossier créés pour vérifier que les champs longs ne sont pas tronqués et que les retours à la ligne sont conservés. Puis répondre en français, court :
 
-- Sujet de la ligne créée et statuts appliqués.
+- Titre du dossier créé et statuts appliqués.
 - Ce qui a été complété par recherche (avec les sources consultées) et ce qui n'a pas pu être vérifié.
 - Si un statut est "À générer" : rappeler qu'il peut lancer la rédaction correspondante (LinkedIn ou Substack).
 - Ce qui manquait et qu'il pourrait ajouter dans Airtable (par exemple une capture, une URL).

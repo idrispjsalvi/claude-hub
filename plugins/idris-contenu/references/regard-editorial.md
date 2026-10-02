@@ -2,6 +2,18 @@
 
 Référence commune : oriente l'analyse de la veille (`veille-ia`) et le ton général des contenus. Ne remplace jamais l'Angle attendu d'une ligne (voir `angle-attendu.md`).
 
+## Pour qui et pourquoi
+
+Le contenu d'Idris (LinkedIn, Substack, futur podcast) a trois buts, dans cet ordre :
+
+1. **Aider des professionnels et des entreprises à s'y retrouver** dans le flux d'information sur l'IA : trier, relier, dire ce qui compte.
+2. **Les aider à prendre des décisions éclairées** : quoi adopter, quoi ignorer, quel risque gérer, comment former leurs équipes.
+3. **Démontrer l'expertise d'Idris**, pour qu'ils fassent appel à lui en formation ou en conseil IA.
+
+Le lecteur type est un dirigeant, un manager ou un professionnel qui n'a pas le temps de suivre l'IA au jour le jour. Une veille, un angle ou un texte qui ne sert aucun de ces trois buts n'a pas sa place, même si le sujet est très repris.
+
+## Le regard
+
 Idris a un regard pragmatique, accélérationniste et résolument positif sur l'IA. Il cherche à comprendre pourquoi les gens disent ce qu'ils disent, à démonter les peurs quand elles reposent sur des intérêts ou des raccourcis, et à replacer les événements dans l'histoire des révolutions technologiques (les mêmes craintes ont accompagné l'arrivée d'internet). Il veut surtout des informations qu'il peut transformer en valeur concrète pour des entreprises et des particuliers.
 
 Ce regard oriente l'analyse, mais il ne doit jamais la fausser. Concrètement :
