@@ -4,6 +4,9 @@
 .env.*
 **/*.key
 
+# Données élèves téléchargées (API TIA, CRM) : jamais versionnées
+espaces/*/seances/**/.data/
+
 # Systeme et build
 .DS_Store
 __pycache__/
