@@ -1,0 +1,236 @@
+[00:00] Dans cette nouvelle vidéo sur N810, nous allons aborder l'un des points fondamentaux
+[00:05] pour bien réussir ces automatisations, surtout si tu n'es pas développeur.
+[00:11] Il s'agit des variables et de comment bien mapper les blocs les uns avec les autres.
+[00:16] Tu vas voir c'est un peu théorique, mais c'est indispensable si tu veux réussir à
+[00:22] utiliser N810 correctement par la suite.
+[00:25] La majorité des erreurs que tu vas faire dans la création de tes workflows vont venir de choses
+[00:30] qu'on va voir dans cette vidéo. Donc c'est super important, reste attentif.
+[00:36] Ça va pas être la plus intéressante niveau applications pratiques, mais par contre c'est
+[00:40] fondamental et je vais vraiment t'expliquer la base de la base.
+[00:47] Donc on attaque tout de suite, dans cette vidéo je vais te parler des variables dans N810 et de
+[00:54] Alors nous voici sur N810, donc qu'est-ce qu'une variable ? Une variable, elle peut se présenter
+[00:59] sous deux formes, c'est simplement un petit espace, un champ dans lequel on va ranger de la
+[01:05] donnée. Et donc cette donnée, elle peut venir d'un bloc edit field, cet comme ici. Edit field,
+[01:13] c'est simplement grâce à ce bloc qu'on va pouvoir créer ou modifier les variables.
+[01:20] Ou bien elle peut provenir de n'importe quel autre champ. Si je te montre un peu ici,
+[01:25] on ouvre edit field, ici je t'ai créé plusieurs variables. En haut à chaque fois tu as le nom de
+[01:32] la variable et en bas sa valeur et au milieu son type. Donc on peut voir qu'ici ma variable s'appelle
+[01:39] variable string, elle est de type string et sa valeur c'est texte. Il y a plusieurs types de
+[01:47] variables, plusieurs types. Donc on a le string, ce sont en fait tout ce qui est texte, chaîne de
+[01:53] caractères. Number, ce sont tous les nombres. Boolean, c'est en fait une variable qui vaut
+[02:00] vrai ou faux, oui et non. Donc en anglais ça va être true ou false. Ensuite on a le array,
+[02:08] ce sont des listes tout simplement. Quand on veut stocker une liste d'éléments, on va les mettre dans
+[02:14] un array par exemple, ça peut être la liste des prénoms dans un groupe. Et object, on peut appeler
+[02:21] ça aussi un dictionnaire. Je vais vous montrer après mais c'est quelque chose qui met en relation
+[02:30] si vous voulez qui contient d'autres variables à l'intérieur qui ont chacune leur nom et leur valeur.
+[02:35] Voilà ça se présente en tracolag. Je vais vous montrer un petit peu ici. On a la variable texte
+[02:40] juste ici. La valeur c'est texte, pas de surprise. Pour le nombre zéro, pas de surprise. Boolean,
+[02:48] comme je vous disais juste avant, il peut y avoir deux valeurs, true ou false. Un array,
+[02:54] voilà ça se présente comme ça, c'est entrecrochet, séparé par des virgules. On appelle ça aussi un
+[02:59] tableau ou une liste et là ici c'est une liste de prénoms tout simplement. Et enfin le dernier
+[03:05] type qui va nous intéresser qu'on croise très très souvent c'est les objects. Les objects,
+[03:11] c'est en tracolade comme ça et ça contient d'autres variables à l'intérieur. Ici on
+[03:16] voit qu'il y a une variable name, qui a une valeur second item et une variable code qui contient la
+[03:23] valeur 2. Ici on voit le nom de la variable dans un object, on appelle ça la clé. Ici la valeur.
+[03:35] Et enfin il y a un peu un mix des deux qu'on va voir très souvent, c'est le tableau d'objet. Donc
+[03:41] si je vous l'affiche en grand ici, voilà vous voyez que c'est entrecrochet et c'est un tableau
+[03:48] séparé par des virgules. Et à l'intérieur de ce tableau, ça contient des objets qui
+[03:54] contiennent chacun plusieurs variables, name et code, name et code, avec chacun leur valeur. Ça on
+[04:07] voit vraiment partout dans les automatisations, ça vous servira tout le temps tout le temps tout
+[04:11] le temps si vous cherchez à automatiser quelque chose. C'est le format de données structurées le
+[04:16] plus courant qu'on va voir partout sur internet. Donc c'est super intéressant, c'est pas très
+[04:21] compliqué, ça se lit bien, c'est assez logique si vous y réfléchissez et donc c'est bien de le
+[04:26] comprendre dès maintenant. À droite on va voir dans l'output les différentes variables qu'on a
+[04:32] définies et leur représentation. De façon soit on gisane directement ici vous voyez, on a un
+[04:40] array d'objects dans n8n, c'est ce qu'on appelle un item. En fait un item c'est simplement un petit
+[04:49] paquet de données qui va se balader de bloc en bloc. Et donc dans notre item, on a toutes les
+[04:54] variables qu'on a définies, on a le array qui est là, le object qui est ici et le array of object,
+[05:01] on voit bien ici sa forme. Donc ça c'est pour vous montrer les quelques types de variables qui
+[05:08] existent, c'est super important de le retenir et donc on va pouvoir créer et modifier ces variables
+[05:15] dans le bloc edit field et à chaque fois pensez bien à changer le type ici, ça c'est souvent une
+[05:21] source d'erreur, on oublie de modifier le type. Une variable elle peut également provenir de
+[05:28] n'importe quel bloc. Donc ici je vous ai mis un exemple avec un bloc HTTP, ça pourrait être
+[05:32] n'importe quoi, c'est simplement pour vous montrer. Là on a un bloc normal et on voit qu'à la fin on
+[05:39] a un array of objects, on aura quasiment tout le temps dans n8n en sortie des array of objects.
+[05:47] Et donc ici on voit qu'on a deux items en fait parce que si vous regardez, on a un array qui
+[05:54] contient deux objets et donc deux petits paquets de données qui vont se balader dans notre workflow.
+[06:00] Ça c'est vraiment pour la présentation générale, maintenant on va le manipuler un petit peu,
+[06:04] on va se rendre compte de à quoi ça ressemble, on va chercher à comprendre le flux de données,
+[06:09] c'est à dire ces petits paquets dont je vous ai parlé, les fameux items, comment est-ce qu'ils
+[06:13] se baladent dans mon workflow. Donc les items partent toujours du trigger, le trigger c'est le début
+[06:21] du workflow, ils sont signalés par le petit éclair à côté, il y en a pas mal de types différents,
+[06:26] je vous les ai déjà évoqué dans une précédente vidéo, je ferai peut-être une vidéo dédiée
+[06:30] aux différents types de triggers plus tard, mais un trigger c'est toujours le début du workflow.
+[06:35] Ici le workflow se déclenche quand j'appuie sur test workflow. Là vous pouvez voir rapidement
+[06:41] le petit item qui se balade partout et qui va venir remplir toutes les branches. Donc on a
+[06:48] le premier bloc que j'ai appelé initialisé qui contient une variable status dont la valeur est
+[06:56] départ. Et donc là on voit bien en output la valeur est départ. Ce qu'il faut savoir c'est
+[07:05] qu'un bloc a toujours à gauche son input, c'est à dire ce qu'il mange et à droite son output,
+[07:12] c'est à dire ce qu'il donne en résultat. Et au milieu c'est simplement la fonction du bloc,
+[07:20] c'est à dire que le bloc va réaliser un certain nombre d'actions pour transformer l'input en
+[07:25] output. Voilà tout simplement c'est comme ça que ça marche. Et donc là j'ai simplement
+[07:29] défini une variable status et ensuite j'ai mis des petites branches. Pour mapper les blocs,
+[07:38] c'est très simple. Vous voyez on peut supprimer les liens en cliquant sur la petite poubelle et
+[07:43] après il suffit de les relier comme ça. Et on peut les relier dans tous les sens. Il
+[07:53] faut simplement se rendre compte que l'item lui il va suivre les flèches. Là il va aller de la
+[08:03] branche et dans chaque bloc. Donc ces blocs vont servir à manipuler les items. C'est toujours
+[08:13] comme ça dans un workflow, l'item se balade et il est manipulé par des blocs de fonction.
+[08:19] Ici je vous ai présenté un peu les différentes façons de fonctionner du bloc set edit field
+[08:25] qu'on a vu au début. Il est un peu particulier, on l'utilise très très souvent donc il faut
+[08:30] bien comprendre comment il fonctionne. Son premier rôle c'est de modifier la variable. Là par exemple
+[08:37] auparavant on avait une variable status, elle valait départ, maintenant on la modifie et elle
+[08:43] vaut en cours. Ok c'est écrit ici la variable status je veux qu'elle va aller en cours. Si la variable
+[08:51] existe pas ça la crée, si la variable existe ça la remplace. Donc là on a modifié notre variable.
+[09:04] Ensuite ici on a une deuxième branche et on a mis en status terminé. Il faut bien comprendre
+[09:12] que ces deux branches là ne communiquent pas. L'item qui passe ici il ne va pas passer ici et
+[09:17] si l'item passe là il s'arrête ici. Ils suivent vraiment les flèches ils ne peuvent pas revenir
+[09:23] en arrière. Donc si on reprend notre branche dure ici on voit que ça se divise en deux donc l'item
+[09:32] il va passer un coup en haut, un coup en bas. En haut on a une fonction qu'on peut appeler remplacée
+[09:39] entre guillemets c'est à dire que là avant on avait une variable status et dans ce bloc on a
+[09:46] uniquement une variable message. Là vous allez voir qu'en fait la valeur qu'on a définie ici va
+[09:54] complètement écraser l'output en fait. On n'aura plus aucune trace de l'input à la fin. Là à la
+[10:00] fin il nous reste uniquement message égale bonjour et on n'a pas moyen de récupérer le status.
+[10:07] Ça c'est le comportement par défaut de la plupart des blocs. La plupart des blocs vont prendre
+[10:11] une input, vont vous donner un résultat mais ils ne vont pas vous redonner l'entrée avec le
+[10:17] résultat. En général ça se passe comme ça. Pour le bloc 7 qui est un peu particulier on a une petite
+[10:24] fonctionnalité ici include other input fields que vous retrouverez parfois et vous allez voir que si
+[10:31] vous l'activez alors dans ce cas vous avez un petit champ qui apparaît ici vous pouvez sélectionner
+[10:36] si on met tout et bien en résultat on va récupérer l'intégralité de l'input et l'intégralité
+[10:44] de l'output. Donc là dans l'output on voit qu'on récupère bien le message égale hello comme tout
+[10:51] à l'heure mais on récupère aussi le status égale en cours qu'on avait dans l'input. Ça peut être
+[10:58] pratique il faut le savoir. C'est super utile parce que ce bloc là 7 vous allez l'utiliser tout le
+[11:06] temps et selon les cas il faut pouvoir choisir si oui ou non on veut transmettre les données
+[11:12] à travers le bloc. Et enfin petite subtilité à la fin vous voyez que j'ai mes deux branches qui
+[11:20] reviennent vers le même bloc. Alors là à votre avis qu'est ce qui va se passer ? En fait on a
+[11:26] notre item qui est parti là haut il s'est divisé ici plutôt ici c'est multiplié en deux pour passer
+[11:31] une fois sur chaque branche. Et là en fusionnant en fait les deux items ne vont pas fusionner pour
+[11:39] redevenir un seul item. Les deux items vont rester deux items et là vous voyez à la fin que vous
+[11:45] avez deux items au total restants. C'est super intéressant de le savoir parce que ça aussi
+[11:52] c'est une grosse source d'erreur de savoir compter les items. Donc là on a deux items restants et si
+[11:57] on clique vous allez pouvoir voir ici on a run1 et run2. Ce sont en fait les différents items ici
+[12:06] valent pas la même chose parce que les valeurs qu'on a définies dans les deux branches sont pas
+[12:11] les mêmes. Et donc petit truc utile moi j'aime bien afficher les variables en JSON parce que c'est
+[12:23] ce qui est de plus précis on va dire mais vous avez aussi une vue de table qui est en fait des
+[12:29] colonnes et des lignes c'est assez peu précis ça marche pas très bien mais par contre vous avez
+[12:34] aussi la vue schéma qui est très bien et qui est une vue un peu plus similaire à ce que vous pouvez
+[12:39] avoir sur make. Donc si vous avez l'habitude d'utiliser make vous pouvez utiliser la vue schéma.
+[12:44] Ok donc là on a simplement vu dans quel sens transite la 2. Maintenant ce qu'on va chercher
+[12:51] à faire c'est aller plus loin c'est pouvoir connecter nos blocs et exploiter cette donnée.
+[13:00] Donc je vous ai fait un petit exemple ici on a un premier bloc qui va définir un prénom
+[13:05] prénom égal Martin c'est une chaîne de caractères c'est un string. On voit ici qu'on trouve prénom
+[13:11] égal Martin. Ok ça c'est top. Ensuite on veut avoir bonjour prénom donc en valeurs on voudrait
+[13:21] que ce soit bonjour Martin c'est ça qu'on cherche à faire. Donc la question c'est comment
+[13:28] est ce qu'on va utiliser la valeur de la variable prénom à cet endroit là. La façon la plus simple
+[13:36] de le faire c'est tout bête. Vous allez venir sur la gauche ici que ce soit dans gizone, dans schéma
+[13:43] ou dans table ça fonctionne pareil et vous allez attraper la variable et la glisser déposée ici.
+[13:49] Et voilà bonjour Martin c'est bien ce qu'on voulait. Là il y a deux espaces.
+[13:56] Qu'est ce qui s'est passé ici si vous êtes attentif ? Originnellement on était ici sur la
+[14:04] bascule fixed si j'y reviens. On passe ici quand on est en mode fixed ça veut dire que ça c'est
+[14:12] la valeur c'est vraiment la valeur c'est une chaîne de caractères. Alors que si vous passez
+[14:17] expression tout ce qui est entre acolades ça va être exécuté comme du JavaScript et en particulier
+[14:25] ça peut être une variable. Ici on voit que notre variable c'est la variable prénom qui vient de
+[14:31] l'input. Donc c'est tout bête. On peut recommencer une seconde fois pour vous montrer depuis cette
+[14:40] fois le schéma on le prend et on fait un glisser déposé. Si on veut que ça vaille uniquement la
+[14:49] valeur du prénom on peut ici. C'est très simple 99% du temps on va faire des glissés déposés.
+[14:59] Et en sortie on a bien bonjour Martin c'est exactement ce qu'on voulait. Mais petite subtilité
+[15:06] vous avez vu que notre variable valait $Jason.BonjourPrénom. En fait il faut savoir
+[15:15] qu'une variable elle a plusieurs noms il y a plusieurs façons de l'appeler. C'est un peu
+[15:20] comme vous elle a son nom complet son nom officiel et elle a des noms raccourcis pour pouvoir l'appeler
+[15:26] plus rapidement. Le vrai nom complet d'une variable c'est celui là. Alors il n'est pas très beau mais
+[15:33] il est simple. A la fin vous avez le nom de la variable que vous avez définie tout à l'heure.
+[15:40] Et au début vous avez simplement le nom du bloc dans laquelle a été créé la variable.
+[15:48] BonjourPrénom. Vous voyez c'est ce bloc là. BonjourPrénom. Et en fait nous on part de
+[15:54] BonjourPrénom. Ça a été créé dans BonjourPrénom. C'est ensuite dans l'item qui est sorti de
+[16:02] BonjourPrénom. Et c'est Jason parce que les données sont toujours au format Jason. Il faut se souvenir
+[16:08] que c'est à cette tête là. Vous n'avez pas besoin de le retenir par coeur parce que en fait
+[16:11] si vous écrivez simplement le nom du bloc et que vous mettez un point il va vous le proposer à chaque
+[16:15] fois. Vous voyez c'est écrit suggested. Donc point item, point Jason il vous le propose, point ici vous
+[16:24] verrez la liste de vos variables. Nous on veut BonjourPrénom. L'avantage d'utiliser ce nom là
+[16:33] c'est qu'il est fixe et c'est le nom de la variable peu importe où vous êtes dans le workflow.
+[16:41] C'est quand même utile de l'avoir surtout si vous voulez utiliser une variable qui est
+[16:45] issue d'un bloc qui est très très en aval dans votre workflow. Ensuite il y a un nom local,
+[16:53] c'est le même principe sauf qu'on va chercher uniquement dans les inputs. On ne va pas se référer
+[16:59] au bloc d'origine, on va juste regarder là dans les inputs que j'ai, qu'est ce que j'ai, j'ai
+[17:04] BonjourPrénom. Et enfin il y a ce petit truc là, Jason c'est la version raccourcie, c'est exactement
+[17:13] la même chose que ça sauf que on remplace tout ça par un dollar Jason, c'est juste pour aller plus
+[17:20] vite mais c'est un peu moins clair. Donc il faut savoir que ces trois formes existent, vous allez
+[17:26] vous habituer à ces trois formes là. Pourquoi est ce que je vous en parle maintenant ? On pourrait se
+[17:30] dire bon de toute façon il suffit de glisser déposer alors moi je m'en fiche, je ne veux pas
+[17:36] m'intéresser à ça. En fait ça quand on commence à utiliser Numitn c'est probablement la plus grosse
+[17:43] source d'erreur qui existe. Je vous montre pourquoi. L'ordre des blocs est important. Pourquoi ? Parce
+[17:50] que si vous utilisez ce mode là ou ce mode là, je vous ai dit on va regarder les variables qu'il
+[17:58] y a dans l'input. L'input c'est l'item qui arrive directement avant. Donc en fait si vous utilisez
+[18:09] le dollar input ou le dollar Jason, on va aller piocher dans l'output du bloc précédent. Donc
+[18:17] si on a des blocs qui s'enchaînent comme ça, ici on a prénom. Vous voyez prénom, ça nous renvoie
+[18:24] Martin. Ensuite on a bonjour, bonjour, ça nous renvoie bonjour. Très bien. Et maintenant on veut
+[18:30] mixer les deux. On peut, c'est facile, je vous ai montré tout à l'heure. On peut prendre le bonjour
+[18:38] ici et après on va aller prendre le prénom ici. On fait glisser déposer. Un petit espace pour la
+[18:47] bonjour Martin. Ça a l'air top. Le problème c'est qu'ici on voit Jason salutations et ici on va
+[18:55] chercher dans le prénom directement. Qu'est ce que ça veut dire ? Ça veut dire que le salutations
+[19:03] doit être impérativement issu du bloc d'avant. Là c'est bien le cas. Le salutations, il est là,
+[19:11] c'est le nom de la variable ici. Et le prénom, il vient du bloc prénom. Mais donc si on a fait
+[19:19] des glissés déposés comme ça et qu'après plus tard, pour une raison X ou Grec, ce qui arrive
+[19:24] souvent, on a besoin d'inverser nos deux blocs. On va se dire ok c'est bon, j'ai juste inversé
+[19:32] mes deux blocs, ça va toujours fonctionner. Le bloc bonjour, on constatera qu'il fonctionne toujours.
+[19:39] Il n'y a pas de raison. Le bloc prénom, il fonctionne toujours. Mais par contre le bloc
+[19:44] bonjour prénom, on voit ici qu'on a une erreur en rouge. Le prénom, on l'a toujours. Pourquoi ? Parce
+[19:51] qu'on cible, parce qu'on a un nom complet si vous voulez. Donc on peut le trouver de n'importe où.
+[19:58] Et on précise bien que c'est la variable prénom qui vient du bloc prénom. Mais la variable
+[20:03] salutation, elle n'est plus dans l'input. Parce que la variable salutation, elle est là. Elle
+[20:09] se trouve pas ici dans l'item. Vous voyez l'item qui sort là, il n'y a plus salutation à l'intérieur.
+[20:16] Ici dans l'input, il n'y a plus salutation. Il faut revenir en arrière. Donc comment est-ce
+[20:22] qu'on fait ? Et bien c'est pour ça qu'en général, quand c'est possible, on va toujours préférer
+[20:30] partir des noms complets. Il n'y a pas besoin de s'en souvenir. Vous mettez juste un point et
+[20:43] ça s'affiche. Salutation. Et là on a de nouveau notre résultat. Et là vu qu'on a utilisé le
+[20:49] noms complet pour les deux variables, si on refait le test et qu'on les échange à nouveau.
+[21:05] Et là bonjour Martin, ça fonctionne. Là il n'y a que trois blocs donc c'est simple. Mais quand
+[21:10] vous avez un grand workflow où il y a 50 blocs à l'intérieur avec des données qui arrivent dans
+[21:14] tous les sens, si vous ne pensez pas à ça, vous risquez de perdre de la donnée en route.
+[21:19] Et donc ça va vous faire des erreurs. Voilà c'est vraiment une petite astuce, ça a l'air bête,
+[21:24] mais ça va vous faire gagner énormément de temps par la suite. Dernière information importante,
+[21:32] en fait les variables, on peut aussi les manipuler. On n'est pas obligé simplement d'utiliser la même
+[21:38] donnée. On peut modifier les valeurs de façon un peu plus précise. Je vous donne un petit exemple.
+[21:43] Ici dans l'initialisation, je définis trois variables. Une variable nombre qui vaut 10,
+[21:51] une variable texte qui vaut texte qui est une chaîne de caractères, une variable boolean qui
+[21:56] vaut false. J'exécute, on voit que j'ai bien mes trois variables avec leurs trois valeurs. Mais
+[22:05] maintenant j'ai défini un bloc opération. Juste pour rappel, pour renommer un bloc, c'est ici.
+[22:13] C'est toujours des variables edit field depuis le début. J'ai défini une variable opération et
+[22:19] là on va venir modifier ces variables, mais cette fois-ci en appliquant une opération dessus. Donc
+[22:26] par exemple, ma variable somme, elle va valoir le nombre plus 10. C'est très simple. La variable
+[22:38] multiplié, elle vaut le nombre x 10. La variable majuscule, elle vaut le texte utilisé à travers
+[22:48] cette fonction qui va le mettre en majuscule. Tout uppercase inversé, ça vaut le boolean inversé
+[22:57] avec le petit point d'exclamation ici avant. Et ici, juste pour vous montrer qu'en fait,
+[23:04] on peut mettre des choses très compliquées à cet endroit-là. Il faut savoir que c'est du
+[23:10] JavaScript. Donc dès lors que vous mettez du JavaScript ici et que ça tient en une seule
+[23:16] ligne, vous pouvez faire ce que vous voulez. Vous pouvez faire du traitement très avancé des
+[23:19] variables. Si vraiment c'est compliqué, on préférera le faire dans un bloc code. Mais si c'est
+[23:25] assez simple et que ça tient sur une ligne, on peut le faire directement dans un bloc edit field
+[23:29] comme ici. Vous inquiétez pas, l'inversion et tout, c'est du JavaScript. Deux possibilités,
+[23:38] soit vous maîtrisez le JavaScript et vous ne maîtrisez pas JavaScript. Et alors là,
+[23:45] il y a deux choses à savoir. La somme vaut 10 plus 10. Multiplié, ça vaut 10 x 10. De majuscule,
+[23:54] c'est bien. Texte en majuscule. Inversé, on a Trou. À la base, on avait False. C'est bon et complexe.
+[24:01] On s'en fiche un peu. C'est juste pour l'exemple. Et donc si vous ne maîtrisez pas JavaScript,
+[24:09] en fait c'est assez simple. La plupart des opérations, c'est des opérations standards,
+[24:13] c'est les mêmes opérations que vous allez pouvoir faire dans un Google Sheet ou quoi que ce soit.
+[24:18] Et donc vous avez les multiplications, les additions. Vous pouvez faire tout ça,
+[24:21] pas de problème. Vous pouvez, si vous voulez, sommez deux variables. Ça, je le précise juste.
+[24:30] Mais en fait, il faut le faire dans les accolades. Parce que si vous faites,
+[24:35] vous voyez là, ça fait 20. Par contre, si vous ne faites pas ça, dès que vous fermez les accolades
+[24:40] comme ça, ici qu'est-ce qui se passe ? Ça vaut 10 plus 10. Parce qu'en fait ce qui s'exécute,
+[24:55] c'est ce qui est entre accolades. Le reste, c'est du texte. Il faut bien juste faire attention à ça.
+[25:01] Mais après, vous pouvez faire vos opérations dans les accolades. 2 plus 10 ici. Et pour trouver
+[25:10] toutes les petites fonctions comme to, uppercase ou ces trucs-là, vous pouvez simplement faire
+[25:15] un point et n8n va vous proposer les fonctions. Donc là, c'est un nombre et on va voir que c'est
+[25:22] les mêmes fonctions grosso modo qu'on va voir sur Sheets. Là, une fonction qui vous permet de savoir
+[25:26] si c'est paires ou impaires. On va pouvoir arrondir. On va pouvoir convertir le texte,
+[25:33] convertir le nombre. Ici, si je reviens sur mon texte, après le point, il y a plein de
+[25:41] petites fonctions. Donc si vous avez besoin de quelque chose, vous pouvez les trouver ici.
+[25:46] Dans les fonctions utiles, sur le texte, il y a case. Lowercase, ça met en minuscule.
+[25:51] Sentence case, ça met uniquement la première lettre en majuscule. Snake case, ça met la
+[25:56] première lettre de chaque mot en majuscule. On peut tester un peu. Vous n'êtes pas obligé
+[26:02] de tout utiliser bien sûr, mais il faut savoir que ça existe. C'est très pratique.
+[26:12] Donc pour résumer, ici, on a fait le tour rapidement de ce qu'était une variable et de
+[26:17] comment on pouvait la manipuler. Ça va être très utile parce que dans la suite de cette série de
+[26:22] vidéos tutos sur AnuItem, je vais vous apprendre à connecter les blocs les uns avec les autres et
+[26:27] exploiter ces variables pour répondre, faire des algorithmes et vraiment faire des automatisations
+[26:33] qui sont utiles.

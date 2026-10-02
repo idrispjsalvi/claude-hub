@@ -1,0 +1,917 @@
+[00:00] N8n a plus de 400 intégrations, mais il y a un module qui te permet de te connecter à toutes les autres.
+[00:07] Oui, j'ai bien dit toutes les autres et c'est ce qu'on va voir aujourd'hui.
+[00:11] C'est sans doute le cours le plus important sur N8n et si tu fais ça,
+[00:15] c'est vraiment ce qui va te permettre de passer au niveau supérieur dans tes workflows
+[00:20] et d'accéder à des outils auxquels tu n'aurais pas eu accès autrement.
+[00:24] Et en plus, c'est souvent de là que viennent les bugs.
+[00:26] Donc ce qu'on va voir aujourd'hui, et ça va être au début un petit peu théorique,
+[00:29] mais tu vas voir après sur la fin, on va vraiment rentrer dans la pratique,
+[00:32] ce sont les modules HTTP et les modules Webbook.
+[00:36] C'est souvent un peu obscur, vous savez que ça existe,
+[00:39] mais c'est parfois un petit peu compliqué de l'utiliser correctement.
+[00:42] Donc là, ce qu'on va faire, c'est qu'on va revenir un petit peu sur la théorie au début
+[00:46] et ensuite, on va faire une première intégration avec le module HTTP,
+[00:51] puis une seconde intégration avec le module Webbook.
+[00:54] Donc si on revient un petit peu à notre sujet,
+[00:58] regarde, j'ai même préparé des petites images.
+[01:01] Donc avant de commencer, je vais juste faire un petit rappel très rapide.
+[01:05] Qu'est-ce qu'une API ?
+[01:06] L'API, c'est le concept central de n-8n
+[01:10] et simplement, à chaque fois que tu as un bloc ici,
+[01:13] n'importe quel bloc, n'importe quelle action,
+[01:15] hop, tu vois, imaginons que tu as ça, peu importe.
+[01:18] Dès que tu as une action, en fait derrière, il se cache des API.
+[01:21] L'API, c'est tout simplement le protocole, on va dire,
+[01:25] qui permet à une application de discuter avec un service.
+[01:30] Si tu veux, c'est comme ça que les machines échangent à distance de l'information.
+[01:35] Donc, chaque fois que tu as un bloc qui s'exécute,
+[01:38] en réalité derrière, c'est une API qui est appelée
+[01:41] et si tu appelles RTABLE, tu as n-8n qui appelle grâce à l'API RTABLE.
+[01:46] Tout simplement.
+[01:47] Maintenant, on va descendre un petit peu d'un niveau
+[01:49] et on va se demander,
+[01:53] voilà, la API, comment ça fonctionne ?
+[01:55] Tu as grosso modo accès à quatre fonctions avec la API.
+[01:59] Tu vas voir, ça a l'air compliqué, mais c'est super simple.
+[02:02] En fait, tu as le GET,
+[02:04] c'est tout simplement ce qu'on va généralement utiliser
+[02:07] pour lire de l'information.
+[02:09] Tu as le POST, c'est ce qu'on va utiliser pour publier de l'information.
+[02:14] Le PUT pour modifier de l'information
+[02:17] et le DELETE pour en supprimer.
+[02:19] Quand tu as interagi sur n-8n
+[02:21] et que tu as un bloc, par exemple sur le bloc RTABLE,
+[02:25] qu'on va prendre RTABLE,
+[02:28] ici, tu vois que tu as différentes opérations
+[02:30] et tu as GET, les many basis,
+[02:33] CREATE RECORD, donc un CREATE,
+[02:35] nous, on a vu que ça correspondait à POST derrière,
+[02:38] DELETE, c'est DELETE,
+[02:39] GET, c'est GET,
+[02:42] SEARCH, ça peut être LIST aussi qui n'est pas là,
+[02:44] et UPDATE, généralement, ça va être PUT.
+[02:47] Donc voilà, ça, c'est ce qui se cache derrière tes appels API.
+[02:52] Tu as généralement ces quatre fonctions-là
+[02:54] et il peut y en avoir une cinquième qui est LIST,
+[02:56] qui te permet de lister des éléments et de faire une recherche.
+[03:00] Ok, si on rentre un petit peu plus dans le détail de la construction d'une API,
+[03:04] en réalité, tu vas utiliser l'une de ces fonctions
+[03:09] sur un élément.
+[03:11] Donc, par exemple, tu vas l'appliquer sur des livres,
+[03:14] si tu veux récupérer une liste de livres,
+[03:16] si tu le fais sur Books slash Harry Potter, généralement,
+[03:20] tu vas récupérer tous les livres Harry Potter et ainsi de suite.
+[03:23] Tu peux préciser l'ID du Harry Potter que tu veux récupérer.
+[03:26] Ça, ça va permettre de récupérer un livre Harry Potter spécifique.
+[03:31] Et si tu veux récupérer une page spécifique du livre Harry Potter spécifique,
+[03:35] voilà, ça s'empile comme ça.
+[03:36] En fait, cette forme de lien,
+[03:39] c'est tout simplement l'adresse de l'élément avec lequel tu peux interagir.
+[03:43] Et donc, on va cumuler ce format d'URL avec ce format d'action.
+[03:50] Donc, si je veux publier un livre Harry Potter,
+[03:53] je vais faire Post Books Harry Potter.
+[03:57] Il n'a pas d'ID, qui ne l'est pas créé.
+[03:59] Donc, Post Books Harry Potter.
+[04:00] Et là, je publie un livre Harry Potter.
+[04:03] Admettons, c'est un exemple.
+[04:05] Donc, ça, c'est le standard REST.
+[04:07] Et généralement, la plupart des APIs que vous allez croiser ont cette tête-là.
+[04:12] Mais c'est un standard, c'est-à-dire que le développeur peut être libre de s'en éloigner un petit peu.
+[04:16] Ça arrive très souvent, mais ce n'est pas grave,
+[04:18] parce que le concept de base, c'est le même et ça marche tout le temps.
+[04:21] Un petit peu pareil.
+[04:23] Donc, si on regarde la structure d'un appel API REST
+[04:28] et qu'on rassemble tous les éléments qu'on a vus.
+[04:31] Donc là, vous voyez, si je veux récupérer la liste des utilisateurs,
+[04:35] je vais faire Get.
+[04:38] 
+[04:38] Get, on se rappelle, c'est pour lire de la donnée.
+[04:42] On va prendre notre endpoint.
+[04:44] C'est ça qui définit quelle application on utilise.
+[04:47] Donc là, on utilise Example.
+[04:50] Si on avait API.RTable.com, par exemple,
+[04:53] on dirait se connecter à RTABLE.
+[04:56] Ensuite, on a la version de l'API.
+[04:58] Ça, on vous la donne directement.
+[05:00] Et l'adresse, on va dire,
+[05:03] donc c'est le chemin, en réalité,
+[05:05] le chemin qui va désigner avec quelle ressource on interagit.
+[05:09] Donc ici, on interagit avec les utilisateurs.
+[05:12] Et enfin, pour compléter, vous allez voir,
+[05:15] après, on illustre, ne vous inquiétez pas.
+[05:17] Là, on aborde juste rapidement.
+[05:19] Et donc les users, là, c'est la ressource qu'on va aller chercher.
+[05:23] Et on peut rajouter en plus, en bonus,
+[05:27] des paramètres ici.
+[05:29] Vous les voyez souvent, c'est quand il y a un point d'interrogation
+[05:32] dans vos urls.
+[05:34] Point d'interrogation, c'est souvent pour affiner la recherche.
+[05:38] Par exemple, si on ne veut pas tous les users,
+[05:40] mais que les users actifs,
+[05:42] on peut rajouter status égale actif.
+[05:47] Et on peut rajouter également un header.
+[05:51] Le header, c'est souvent ici qu'on va passer notre clé API.
+[05:56] Pas toujours, mais généralement, on va la passer en clé API.
+[06:00] Et enfin, le dernier type de données qu'on peut envoyer,
+[06:03] c'est la donnée structurée, comme ça, on gisonne.
+[06:06] Ça, ça va être quand on fait un post ou un put,
+[06:08] et qu'on veut modifier ou envoyer de la donnée.
+[06:11] On va utiliser un post et de la data, comme ça.
+[06:15] Et donc, là, vous me dites, ok, tu nous as un petit peu perdu.
+[06:19] Vous allez voir, c'est super simple.
+[06:21] On va aller voir maintenant notre module HTTP,
+[06:24] qui est le module central de ce tuto.
+[06:28] Donc voilà, le module HTTP,
+[06:31] peut-être que vous l'avez déjà utilisé, peut-être pas,
+[06:33] mais en tout cas, c'est le module vraiment le plus important de N8N.
+[06:36] Et tous les autres modules, quasiment, sont des modules HTTP
+[06:39] qui sont déjà pré-remplis.
+[06:41] Donc, en théorie, vous pouvez faire tous vos workflows
+[06:44] uniquement avec le module HTTP.
+[06:46] Et là, vous allez voir qu'on va retrouver
+[06:48] les éléments dont on a parlé à l'instant.
+[06:50] Ici, on a la méthode.
+[06:53] Donc là, il y a toutes les méthodes possibles et imaginables qui existent.
+[06:56] Mais nous, généralement, celle qu'on va utiliser le plus,
+[06:58] c'est le GET, toujours pour lire de l'information,
+[07:02] le DELETE, qui sert à supprimer quelque chose,
+[07:07] PUT ou PATCH pour modifier, ça va dépendre des sites,
+[07:10] et POST pour envoyer de la donnée.
+[07:15] Et donc voilà, d'ailleurs, j'ai dit qu'il y avait LIST en protocole,
+[07:17] mais non, LIST, généralement, c'est un GET.
+[07:19] C'est un GET fait sur un dossier, tout simplement.
+[07:23] Donc GET, voilà, POST, PUT.
+[07:25] Donc si on veut aller lire de la donnée, on va faire GET.
+[07:31] Ensuite, imaginons, on a notre API qui va être Exemple.com.
+[07:37] On a la version de l'API qui est là, le V1.
+[07:39] On va aller chercher nos livres.
+[07:43] Authentification, ici, c'est le système d'authentification de n8n,
+[07:47] mais en réalité, derrière ce qui se cache, ce sont les headers.
+[07:50] Donc les headers, c'est cette partie-là.
+[07:59] Ensuite, les query parameters qu'on peut mettre ici,
+[08:04] c'est tout simplement cette partie-là.
+[08:09] Et si jamais on est en POST, admettons, on va pouvoir rajouter un body,
+[08:15] send body, et là, c'est la donnée qu'on envoie également.
+[08:20] Donc la donnée, c'est ce qu'on a ici, qu'on va envoyer quand il y a un POST.
+[08:26] Et donc là, vous allez me dire, OK, je vois à peu près les éléments
+[08:31] qui constituent une requête HTTP, mais, une API,
+[08:36] mais je n'ai aucune idée de comment m'en servir.
+[08:39] Ça a l'air super compliqué.
+[08:41] En réalité, vous allez voir que cette théorie, la connaître,
+[08:44] ça va vous aider, mais 9 fois sur 10, vous n'avez même pas besoin
+[08:47] de rentrer dans le détail, parce que les services que vous utilisez
+[08:50] vont vous donner directement l'URL à copier-coller dans n8n.
+[08:57] Et vous avez juste à réussir à l'identifier.
+[08:59] Mais connaître cette théorie, ça va vous aider à identifier
+[09:02] les bonnes informations.
+[09:04] OK ? Donc on va faire un test très rapidement,
+[09:08] et je vais vous montrer comment ça marche avec un module HTTP.
+[09:11] Le module HTTP, comment ça se passe, en fait ?
+[09:15] C'est nous qui allons contacter un service extérieur.
+[09:18] C'est l'API qui est derrière.
+[09:22] Et donc pour ça, on va aller très rapidement sur un site qui s'appelle
+[09:29] JSON PlaySolder, et qui va juste nous donner une toute petite API de test.
+[09:35] OK.
+[09:36] Et quand vous allez...
+[09:38] Hop, hop, hop, hop, hop !
+[09:40] Voilà, ça va nous donner une petite API de test.
+[09:43] Et donc là, ce qu'on va aller comprendre, c'est comment est-ce
+[09:46] qu'on arrive à retrouver les éléments de l'URL.
+[09:49] Et tout à l'heure, on le fera sur un carréel.
+[09:53] Donc, voilà, try it.
+[09:56] On voit ici, fetch, c'est simplement du JavaScript.
+[10:01] Nous, ça ne nous intéresse pas.
+[10:02] Généralement, on va nous donner ces URLs-là, soit sous une forme de fetch,
+[10:06] comme ça, soit sous une forme de cURL.
+[10:09] On peut voir les deux.
+[10:12] Alors, on va préférer le cURL quand il y en a, mais peu importe.
+[10:15] En fait, il faut réussir à repérer à l'intérieur ce qu'on veut chercher.
+[10:20] Et donc là, on voit notre URL d'API.
+[10:23] Et on reconnaît que c'est une API qui va aller chercher la to-do
+[10:27] au numéro 1.
+[10:29] Donc, si on va tester ça dans notre bloc HTTP, regardez, hop,
+[10:37] on l'exécute.
+[10:43] Et voilà.
+[10:44] Ah oui, c'est post.
+[10:45] Moi, j'ai dit get1.
+[10:46] On veut lire la donnée, donc on utilise le get.
+[10:50] On veut lire la to-do numéro 1 et on récupère.
+[10:54] Voilà, la to-do numéro 1.
+[10:58] Tout simplement.
+[10:59] Avec la même chose, si on voulait récupérer toutes les to-do,
+[11:02] il suffirait de mettre get to-do, comme ça.
+[11:05] Et normalement, on va récupérer toutes les to-do.
+[11:08] Voilà, c'est super simple.
+[11:09] Si on veut récupérer la to-do numéro 10, hop, voilà, to-do 10.
+[11:15] C'est super simple.
+[11:17] Et on va pas deviner à chaque fois ces URLs,
+[11:19] mais vous comprenez comment ça fonctionne.
+[11:21] Maintenant, si on revient ici sur notre site,
+[11:25] on va voir qu'il va nous donner des ressources.
+[11:28] Et donc ça, ce sont les types d'adresses avec lesquelles on peut interagir.
+[11:31] Et donc, on voit qu'il y a des posts, des commentaires, des albums,
+[11:34] des photos, des to-do et des users.
+[11:36] Donc, si on veut récupérer la liste des users,
+[11:39] on va aller sur n.10 et au lieu de to-do,
+[11:42] on va faire user ici, get les users.
+[11:46] Et on va récupérer tous les utilisateurs.
+[11:51] Si on veut récupérer les posts, on va faire get posts.
+[11:55] Et on va récupérer tous les posts.
+[11:57] Donc, en fait, juste en connaissant un peu la norme REST,
+[12:01] vous allez pouvoir deviner comment fonctionnent les APIs.
+[12:04] Ça va vous faire gagner beaucoup de temps dans vos recherches, en fait.
+[12:08] Et donc là, si on veut récupérer tous les commentaires,
+[12:13] eh bien, on va faire get comment.
+[12:15] Exactement pareil.
+[12:18] get comment.
+[12:20] Voilà, on lance.
+[12:24] Et on récupère tous les commentaires.
+[12:25] Et si on veut uniquement le commentaire n°5, comment 5,
+[12:30] on a le commentaire n°5.
+[12:33] Ça, c'est la base de la base.
+[12:35] Maintenant, si on va un peu plus loin,
+[12:37] on voit qu'il nous donne des routes.
+[12:39] C'est souvent ça qu'on va nous donner.
+[12:41] Les routes, ce sont la liste de tous les appels API que le service prend en compte.
+[12:48] Donc, si vous voulez toutes les fonctions que vous allez pouvoir faire.
+[12:51] Donc, on voit qu'on peut récupérer avec get la liste des posts.
+[12:58] On peut récupérer un seul poste.
+[12:59] Et on peut aussi récupérer, là, qu'est-ce que ça veut dire ?
+[13:03] get, on veut lire.
+[13:05] Et après, on prend par la fin.
+[13:06] Donc là, tous les commentaires du poste n°1.
+[13:10] Ok, on va tester tous les commentaires du poste n°1.
+[13:15] Regardez.
+[13:16] On comprend pourquoi.
+[13:17] get pour lire, les commentaires, le poste n°1.
+[13:21] Et voilà.
+[13:23] On a les commentaires, mais qui sont uniquement liés au poste n°1.
+[13:28] Ici, alors on a un truc nouveau.
+[13:29] On a le fameux point d'interrogation dont je vous avais parlé tout à l'heure.
+[13:34] C'est, si vous voulez, quand vous voulez faire un filtre, une recherche,
+[13:36] affiner un peu votre recherche.
+[13:38] Donc là, ce qu'on comprend, c'est qu'on veut récupérer tous les commentaires
+[13:42] dont, vous pouvez traduire ce point d'interrogation, pardon,
+[13:46] tous les commentaires dont le poste id égale 1.
+[13:50] Donc, en fait, ça correspond au même, on va avoir le même résultat
+[13:55] que sur la roue juste au-dessus.
+[13:56] Simplement, on passe par deux adresses différentes.
+[13:59] Ici, on se concentre sur le poste.
+[14:02] Ok, on part du poste n°1.
+[14:03] Et une fois qu'on a le poste n°1, on récupère les commentaires.
+[14:05] Alors qu'ici, on vient récupérer directement les commentaires et on va les filtrer.
+[14:10] Mais on peut se convaincre que dans les newtons, on aura la même chose.
+[14:16] Regardez, on récupère les commentaires du poste n°1.
+[14:19] Et on a exactement la même chose.
+[14:22] Et donc là, on a ce point d'interrogation ici avec le poste id égale 1.
+[14:26] C'est une query-paramètre, donc un paramètre de requête.
+[14:32] Et on a vu que les query-paramètre, on les a ici.
+[14:35] Parce qu'en fait, là, on peut mettre l'url comme ça,
+[14:38] mais on pourrait aussi venir mettre le poste id ici et avec la valeur 1.
+[14:42] Et vous allez voir qu'on va avoir exactement le même résultat à nouveau.
+[14:47] Voilà, parce que N8n, si vous voulez, vous simplifie un peu l'interface
+[14:52] pour que vous n'ayez pas besoin d'aller mettre des urls là-dedans trop compliqués.
+[14:58] On voit que c'est la même chose.
+[15:00] Si on revient ici, il nous propose en route poste pour les postes.
+[15:06] Ça veut dire qu'on peut créer nous-même une publication.
+[15:09] C'est sympa, on va voir ce que ça donne.
+[15:11] On va voir ce que ça donne.
+[15:14] Simplement, ici, c'est un poste, donc on va devoir envoyer de la donnée.
+[15:21] Voilà, on va envoyer de la donnée.
+[15:25] Et vous allez voir qu'il va y avoir un problème.
+[15:28] Ah, ok, ça a marché quand même, mais on a envoyé un poste vide.
+[15:34] Et oui, parce qu'on n'a pas rentré notre donnée, on n'a pas précisé où est la donnée.
+[15:40] Quelle donnée on envoie plutôt ?
+[15:42] Donc là, je vous ai dit tout à l'heure qu'on va utiliser pour ça le body paramètre.
+[15:48] Ici, le body, c'est ça qui nous permet d'envoyer de la donnée avec les postes.
+[15:52] Mais on a un petit problème, c'est qu'on ne sait pas qu'est-ce qu'on doit envoyer.
+[15:55] Là, si j'envoie un article comme ça, coucou, il n'y a pas de raison que ça marche.
+[16:01] Ici, en l'occurrence, ça marche parce qu'ils ont fait les trucs simples.
+[16:05] Mais en théorie, il n'y a pas de raison que ça marche.
+[16:08] Et en fait, ce sont eux qui vont vous donner simplement la liste des paramètres à passer ici.
+[16:16] Ça va être écrit. On va faire l'exemple tout à l'heure sur un cas très très concret.
+[16:21] Ici, c'est une API de démo pour le cours.
+[16:25] Ici, on a le guide. On peut aller voir plus en détail.
+[16:29] Vous voyez que ça va marcher exactement pareil pour PUT, qui va nous permettre ici de modifier le poste numéro 1.
+[16:34] PATCH, qui va nous permettre aussi de modifier le poste numéro 1.
+[16:39] DELET, qui va nous permettre de supprimer le poste numéro 1.
+[16:43] Si on va dans le guide, ici, il va nous donner à chaque fois un exemple.
+[16:52] Donc, si on utilise cet URL-là, on va avoir ce résultat-là.
+[17:00] C'est pratique pour préparer vos workflows, de savoir ce qui va arriver en sortie.
+[17:04] Et là, vous savez que vous allez récupérer les titres et les contenus des postes.
+[17:10] Si je liste tous les postes, je sais que ça va arriver dans un tableau comme ça.
+[17:15] On gisonne. Alors, le gisonne, ne vous inquiétez pas, ça fait peut-être un peu peur.
+[17:18] Mais en réalité, c'est très descriptif. Donc là, les crochets, ça veut dire que c'est une liste.
+[17:24] Et après, chaque ligne en tracolade, c'est un poste.
+[17:27] Donc là, on va récupérer 100 postes.
+[17:30] Ici, on voit pour créer un poste. Regardez, ce fetch, il est un peu plus construit que d'habitude.
+[17:36] On a un fetch, donc ça veut dire qu'on fait une API.
+[17:40] Ici, on a l'URL du poste.
+[17:44] C'est pour interagir avec la ressource poste.
+[17:46] La méthode poste, c'est quelle opération on va faire. Donc, on va publier de l'information.
+[17:52] Et après, il nous dit, en body, on va mettre en gison, title, body et user ID.
+[18:00] Et en fait, on va copier-coller ça. Regardez.
+[18:04] Est-ce que je peux faire ça ?
+[18:09] On va venir le copier-coller tout simplement.
+[18:11] Et en fait, c'est ça qu'on va faire à chaque fois.
+[18:13] C'est qu'on va aller regarder sur le site de l'outil qu'on va utiliser.
+[18:15] Et on va copier-coller.
+[18:18] Donc là, si on veut créer un poste, on récupère cet URL-là qui correspond à l'URL créer un poste.
+[18:26] Ensuite, en méthode, on a juste à copier-coller dans une unité.
+[18:31] Métode poste. Voilà.
+[18:33] Ensuite, en body, on va chercher body.
+[18:37] Body ici, il nous dit gison.
+[18:40] Donc, on va mettre gison.
+[18:43] Et ensuite, en paramètres, il nous dit title.
+[18:48] Title et en valeur fou.
+[18:50] Donc, on va faire ça exactement.
+[18:53] Valeur fou.
+[18:53] Ensuite, on en a un deuxième. On a body.
+[18:57] Ça, c'est le nom du paramètre.
+[18:59] Sa valeur, c'est bar.
+[19:02] Ensuite, on a user ID.
+[19:05] Donc, on met user ID.
+[19:07] La valeur, c'est 1.
+[19:09] Voilà les trois éléments qu'on doit mettre.
+[19:11] Et après, ces champs-là, on va pouvoir les mapper.
+[19:14] Et enfin, il nous dit header.
+[19:16] Donc, on va mettre un header.
+[19:18] C'est où header ? On cherche.
+[19:20] Où est-ce que c'est ?
+[19:21] Ah, c'est là. Send header.
+[19:24] Oui, on va mettre un header.
+[19:26] Et après, c'est exactement la même chose.
+[19:28] On va prendre le content type ici.
+[19:32] Ça, c'est le nom.
+[19:33] Et ça, c'est la valeur.
+[19:37] Voilà.
+[19:37] Est-ce que j'ai bien tout copié, collé ? J'ai rien oublié.
+[19:41] Ça m'a l'air bon.
+[19:43] Je fais envoyer.
+[19:44] Je teste.
+[19:47] Et voilà.
+[19:47] Et là, on voit qu'il nous a bien créé un poste
+[19:50] dont le titre est fou,
+[19:52] le body est bar,
+[19:53] le user ID est 1,
+[19:54] et l'ID est 101.
+[19:57] Et là, en théorie, si on vient faire get ici
+[20:01] et qu'on vient prendre le post 101,
+[20:03] je ne sais pas s'il y a vraiment une base de données dessus,
+[20:05] mais on devrait récupérer.
+[20:07] Bon voilà, là, on ne l'a pas parce que
+[20:10] c'est une API d'exemple, donc elle fait rayer en derrière.
+[20:13] Mais en théorie, on aurait pu récupérer notre poste comme ça.
+[20:18] OK, donc ça, c'était vraiment le petit point théorie
+[20:20] de notre API.
+[20:22] J'espère que vous avez compris.
+[20:24] Et maintenant, on va rentrer un petit peu plus
+[20:26] dans le détail.
+[20:28] Et donc là, on va voir l'exemple avec le CURL
+[20:32] et on va pouvoir l'importer directement.
+[20:33] Et on va faire avec un outil très concret.
+[20:37] On va utiliser EpiFile.
+[20:40] EpiFile, c'est, si vous voulez, une grosse base de données
+[20:43] de beaucoup d'API
+[20:44] qui vont vous permettre de faire énormément de choses
+[20:46] dans vos workflows end-to-end.
+[20:48] Quand vous comprenez ça, vous débloquez 99%
+[20:51] du potentiel d'end-to-end.
+[20:53] Regardez, là, grâce à EpiFile,
+[20:55] on va pouvoir, par exemple, scraper TikTok,
+[20:57] scraper Google Maps, scraper Instagram,
+[21:00] scraper Facebook, scraper Amazon,
+[21:03] scraper des sites web.
+[21:05] Il y en a énormément.
+[21:07] Il y en a énormément.
+[21:08] Voilà, on peut même scraper Uber Eats.
+[21:11] On peut faire beaucoup de choses.
+[21:13] On peut scraper Google Flight.
+[21:14] On peut tout faire.
+[21:15] Scraper eBay, scraper les commentaires YouTube.
+[21:18] Imaginez tout le potentiel que vous allez débloquer
+[21:20] quand vous allez réussir à intégrer ces API
+[21:23] dans vos workflows end-to-end.
+[21:25] On va faire un exemple.
+[21:26] On va faire un exemple très très rapide avec EpiFile.
+[21:29] Regardez, je vais juste me connecter.
+[21:31] Vous pouvez faire pareil.
+[21:32] Vous créez votre compte.
+[21:34] On va prendre un appel au hasard.
+[21:37] Donc, par exemple, celui-ci, regardez, de Supreme Coder,
+[21:41] qui nous permet de scraper un profil LinkedIn sans cookie.
+[21:44] C'est-à-dire qu'on n'a même pas besoin de connecter notre compte.
+[21:47] Et on arrive sur cette interface.
+[21:49] C'est super austère.
+[21:49] C'est tout le temps super austère, mais ce n'est pas grave.
+[21:51] Et regardez, là, je mets mon URL LinkedIn ici.
+[21:55] Je vais tester.
+[21:56] Je vais faire Start pour voir un peu ce qu'on a à la fin.
+[22:00] Et regardez, en fait, c'est un service qui va démarrer.
+[22:03] Scraper, qui va scraper mon profil et qui, après, va envoyer les infos.
+[22:09] Et donc, voilà.
+[22:10] Là, dans Output, on a le détail de tout ce qu'il a récupéré comme information.
+[22:14] On peut le voir soit en format table, soit en format JSON, comme ça.
+[22:19] Voilà.
+[22:19] Ça dépend à quel point vous vous êtes familiarisé avec le JSON.
+[22:22] Moi, je préfère en JSON.
+[22:24] Et là, c'est mon profil LinkedIn.
+[22:25] Donc, super cool.
+[22:26] Grâce à N-Witten, on va pouvoir scraper LinkedIn.
+[22:32] Et donc là, on va retrouver nos idées d'API qu'on avait tout à l'heure.
+[22:36] Comment je fais maintenant pour mettre ce truc-là dans N-Witten ?
+[22:39] Très N-Witten.
+[22:39] Vous allez voir, c'est super simple.
+[22:41] Il nous suffit de revenir ici sur la page du scraper.
+[22:46] Et on va sélectionner en WADWATS API.
+[22:50] Et pour l'occasion, on va prendre API Client.
+[22:53] Comme ça, vous allez voir qu'on va enfin avoir le fameux CURL,
+[22:57] dont je vous parle depuis tout à l'heure.
+[23:00] Alors là, il y a une tête un peu bizarre.
+[23:01] Je pense qu'on ne va pas pouvoir le copier-coller.
+[23:02] Mais en tout cas, c'est super clair.
+[23:04] Regardez, on a CURL et après, on a tout le détail.
+[23:07] Donc voilà, CURL.
+[23:08] On sait qu'on doit mettre ça en URL directement.
+[23:12] Donc hop.
+[23:14] Ça, on le met en URL.
+[23:19] Ensuite, on a besoin de mettre en post.
+[23:22] Donc on va mettre POST.
+[23:27] D, c'est Data.
+[23:29] On veut un JSON.
+[23:32] Donc Data.
+[23:35] Ça, on peut le retirer.
+[23:36] C'est le truc de tout à l'heure.
+[23:37] Tout ça, on peut le retirer.
+[23:39] Data, body, JSON.
+[23:41] Parfait.
+[23:42] Tout ça, on va retirer les anciens.
+[23:47] Et en header, H, c'est header.
+[23:51] On va mettre ça.
+[23:55] En header.
+[23:56] C'est où le header ?
+[23:57] C'est ici.
+[24:00] Content type, c'est le name.
+[24:04] Et value ici.
+[24:06] Et donc, il nous reste une dernière chose à faire.
+[24:08] On a besoin du token.
+[24:11] On a besoin du token.
+[24:14] Le token, on peut le récupérer ici une fois que vous l'avez créé.
+[24:17] On va mettre le token.
+[24:18] On pourrait le mettre directement ici.
+[24:21] OK, ça marche.
+[24:22] Moi, comme je veux le sauvegarder aussi pour toutes les prochaines fois,
+[24:26] et bien le token, on va le mettre en authentification.
+[24:30] OK, donc on va le mettre en authentification.
+[24:32] On va sélectionner générique.
+[24:34] Et donc, nous, le type, le token est où ?
+[24:37] Le token est dans les query paramètres.
+[24:42] Donc on va sélectionner Query Host.
+[24:45] Et on va créer un nouveau credential.
+[24:48] Qu'on va appeler Epiphy.
+[24:53] Son nom, si vous vous souvenez bien, c'est token.
+[24:57] Regardez, on l'a là.
+[24:59] Le nom, c'est token.
+[25:01] Et la valeur, c'est ce qu'on a récupéré tout à l'heure.
+[25:06] On sauvegarde.
+[25:08] Donc notre token, c'est bon.
+[25:10] Il nous reste une dernière chose.
+[25:13] C'est que là, on a mis un post, mais on n'a pas mis les données.
+[25:17] Et il faut bien que j'envoie mon profil LinkedIn,
+[25:21] que je veux scraper à la P.I.
+[25:24] Regardez, on va venir ici.
+[25:25] Et encore une fois, c'est du copier-coller.
+[25:27] Le gison, il est là.
+[25:29] On vous le donne.
+[25:30] Vous pouvez juste le copier-coller.
+[25:34] Et après, il suffit de mapper, c'est comme d'hab.
+[25:36] Là, on l'a en champ.
+[25:38] Nous, on va le coller en gison.
+[25:43] Et donc, en URL, je vais en laisser qu'un seul.
+[25:46] On va mettre le mien.
+[25:49] Mon LinkedIn, find contact.
+[25:52] Voilà, est-ce que vous voulez récupérer l'adresse mail ?
+[25:54] C'est là, c'est détaillé.
+[25:56] Après, ici, quand vous lisez la fiche, tout est expliqué.
+[26:00] Et normalement, on est bon.
+[26:01] On va tester.
+[26:03] Exécute test, incroyable.
+[26:05] Et là, qu'est-ce qu'on a ?
+[26:07] On a scraper mon profil LinkedIn.
+[26:13] Et donc, on a demandé le scrap.
+[26:16] Maintenant, il reste une deuxième chose à faire.
+[26:18] C'est de récupérer la valeur du scrap.
+[26:21] Là, on voit qu'on a bien créé le scraper ici.
+[26:25] Il a bien tourné, c'est parfait.
+[26:26] Maintenant, on a besoin de récupérer les informations.
+[26:29] Si on va sur Output, on voit qu'on a bien les informations qu'on a été scrapées.
+[26:34] Et pour les récupérer dans les NewTen, comme on va faire, on va à nouveau passer par API.
+[26:40] Et on va récupérer Get Dataset Item.
+[26:43] On récupère les informations dans le Dataset.
+[26:48] C'est du Get.
+[26:49] On va récupérer l'URL.
+[26:53] On va le mettre dans un nouveau module HTTP ici.
+[26:59] C'est du Get.
+[27:00] On colle l'URL.
+[27:01] En authentification, on s'en souvient.
+[27:04] On a créé une authentification tout à l'heure.
+[27:07] Générique, Query-Auth, Epi-Fi.
+[27:09] Comme ça, je n'ai pas besoin de remettre le token à chaque fois.
+[27:13] Et donc là, Dataset, on a ça.
+[27:16] Bon, on teste.
+[27:17] Ça nous renvoie quoi ?
+[27:18] Voilà.
+[27:19] Ça nous renvoie notre résultat.
+[27:23] On voit qu'on a le scraper qui est effectivement tourné.
+[27:26] Si on clique dessus, on voit qu'il a tourné.
+[27:30] Et dans Output, si on le met en JSON, on voit qu'il a bien scrapé mon profil.
+[27:34] Ça, c'est parfait.
+[27:35] Et maintenant, la question, c'est comment on va récupérer cette info dans N8n.
+[27:41] Et donc là, regardez ce qu'on va faire.
+[27:43] C'est qu'on va revenir ici.
+[27:46] Et on va aller chercher dans API les endpoints.
+[27:52] Et donc là, run actor, ce n'est pas vraiment ce qu'on veut.
+[27:54] Ça, c'est pour lancer un scraper.
+[27:56] On a vu.
+[27:57] Lancer de façon asynchrone, ça ne nous intéresse pas.
+[28:01] À faire tourner de façon asynchrone et récupérer le data set.
+[28:06] Ça, c'est pas mal.
+[28:07] En fait, c'est peut-être plus ce qu'on veut.
+[28:09] Donc, on va récupérer juste cette nouvelle URL.
+[28:13] Et comme ça, on va récupérer d'un seul coup les informations.
+[28:18] C'est que des copiers collés.
+[28:20] Et donc, si on exécute, là, ça va tourner et il va nous renvoyer directement les informations sur mon profil.
+[28:30] Vous voyez, Antoine Deschamps, process engineer.
+[28:33] C'est parfait.
+[28:35] Donc, c'est là où il va falloir prendre un petit peu d'expérience.
+[28:40] C'est réussir à naviguer à travers toutes ces URLs et identifier celles qui correspondent à votre besoin.
+[28:47] Ça peut avoir l'air un peu compliqué maintenant, mais vous allez voir qu'en réalité, quand vous le faites, c'est assez simple.
+[28:51] Parfois, ça prend un peu de temps, mais ce n'est pas très compliqué parce que tout est écrit, en fait.
+[28:56] Tout est écrit, donc il suffit de lire.
+[28:57] Voilà, vous lisez.
+[28:58] Est-ce que ça, c'est ce que je veux faire ?
+[28:59] Non, ce n'est pas ce que je veux faire.
+[29:00] Je passe à la suite.
+[29:01] Est-ce que c'est ce que je veux faire ?
+[29:03] Oui, non.
+[29:04] Et si c'est le cas, vous copiez les informations que vous avez là et vous les mettez dans une mi-teine.
+[29:10] Et après, ça fonctionne.
+[29:10] C'est aussi simple que ça.
+[29:14] OK, donc là, on a fait le premier bout, qui est les modules HTTP.
+[29:18] Ça nous permet, nous, d'aller contacter un site extérieur.
+[29:24] Maintenant, si on veut aller plus loin, la question qu'on va se poser, c'est comment est-ce qu'un site extérieur peut nous contacter ?
+[29:32] Là, par exemple, on est passé pour le Scrapping en mode Synchrone.
+[29:35] C'est-à-dire qu'on lance la requête, on lance le Scrap, on attend et à la fin, EpiFile nous renvoie le résultat.
+[29:43] Maintenant, si je veux Scraper sans profil de l'incodin d'un coup, ça ne va pas être possible parce qu'il va peut-être falloir attendre 10 minutes avant que tout le Scrapping se fasse.
+[29:50] Donc, on va devoir utiliser un Webbook.
+[29:54] Qu'est-ce qu'un Webbook ?
+[29:56] Le Webbook, c'est exactement l'inverse du module HTTP.
+[30:01] C'est en fait quelque chose d'extérieur qui vous contacte.
+[30:07] Si on veut faire l'exemple, regardez ici, on a un Webbook.
+[30:10] Généralement, avec un Webbook, vous pouvez mettre à la fin une réponse pour le Webbook.
+[30:14] C'est ce que va renvoyer le Webbook.
+[30:17] OK, donc là, on va faire un petit test.
+[30:18] Vous allez voir, c'est vraiment un test marron.
+[30:23] Ça, on va le mettre de côté.
+[30:25] Je vais en prendre un autre pour le test.
+[30:29] Et donc, qu'est-ce qu'un Webbook ?
+[30:31] En fait, c'est vous qui donnez le URL à l'outil pour que vous soyez contacté.
+[30:37] Eh oui, c'est bien ça.
+[30:40] Donc regardez, on va prendre le test URL.
+[30:44] On va le copier.
+[30:47] Et donc là, on voit, c'est un GET.
+[30:50] Hop, GET, le test URL.
+[30:52] Si vous avez besoin d'envoyer de la donnée, vous pouvez faire POST, vous le changez.
+[30:58] Normalement, vous pouvez mettre une authentification ici qui vous correspond.
+[31:01] Ça va sécuriser, ça va éviter que n'importe qui vienne utiliser vos Webbooks.
+[31:07] Et donc, on copie l'URL ici.
+[31:10] Regardez.
+[31:10] Et la magie, on va faire un HTTP request.
+[31:14] Et on va l'envoyer sur notre Webbook.
+[31:18] Et on va voir ce que ça donne.
+[31:20] Save.
+[31:20] Et en response to Webbook, on va répondre.
+[31:24] On va faire un petit set, on va mettre une variable.
+[31:27] On va appeler sa texte.
+[31:30] On va dire coucou.
+[31:32] Et vous allez voir qu'on va recevoir coucou.
+[31:34] Et donc là, dans response to Webbook, on va mettre code 200.
+[31:38] Et on va répondre avec le premier item qui arrive.
+[31:42] Donc, l'élément précédent.
+[31:44] Ce que je vais faire, c'est que je vais publier.
+[31:51] Et comme ça, on va utiliser le production URL.
+[31:54] On va répondre ici, il faut bien que je précise.
+[31:58] Using respond to Webbook node.
+[32:01] Je publie.
+[32:04] Je lance.
+[32:05] Et là, regardez.
+[32:07] Ça marche.
+[32:08] Et je reçois bien un résultat.
+[32:10] Texte coucou.
+[32:10] Allez, c'est bien.
+[32:12] Et donc voilà, pour la petite démo du Webbook, ce qu'on va faire,
+[32:15] pour bien comprendre, ça nous permet d'ouvrir une porte
+[32:17] qui va permettre à des requêtes HTTP d'autres personnes
+[32:22] de nous envoyer de l'information.
+[32:24] Donc, on met notre Webbook.
+[32:26] On va récupérer le production URL.
+[32:28] Et vous voyez, c'est un GET avec une URL.
+[32:31] C'est exactement ce qu'on a vu tout à l'heure.
+[32:33] Simplement là, c'est notre URL.
+[32:34] Et il faut qu'on la donne aux autres pour qu'ils puissent nous contacter.
+[32:38] Quand vous le faites de façon pro,
+[32:40] mettez un facteur d'authentification ici.
+[32:43] Voilà, vous mettez un mot de passe, vous mettez quoi que ce soit.
+[32:46] Ça va permettre de sécuriser un peu le truc.
+[32:48] 
+[32:49] Ça, ça va dépendre du...
+[32:51] Voilà, si vous pouvez, parfois vous ne pouvez pas.
+[32:53] Mais ça se fait, en tout cas, pour bien sécuriser.
+[32:55] En réponse, nous, on va mettre qu'on utilise un Webbook,
+[32:59] un node respond to Webbook.
+[33:02] OK.
+[33:03] On va mettre un petit set.
+[33:06] Regardez.
+[33:06] Ici, on va mettre une variable texte coucou.
+[33:10] OK.
+[33:13] Et on va mettre un respond to Webbook,
+[33:15] dans lequel on va répondre avec le dernier item qui est arrivé.
+[33:20] Donc, en fait, on va répondre le contenu de ce set-là.
+[33:24] Je publie.
+[33:26] Et dans mon HTTP Request, je colle l'URL de mon Webbook.
+[33:31] Et je mets en GET.
+[33:33] Vous voyez, c'est la même chose.
+[33:34] Là, j'ai mis GET, l'URL de mon Webbook.
+[33:37] Là, GET, l'URL de mon Webbook.
+[33:39] Et quand j'exécute, j'ai en réponse coucou.
+[33:43] Là, ce qui s'est passé, c'est un petit peu tiré par les cheveux,
+[33:46] c'est que c'est ce bloc HTTP-là
+[33:49] qui a contacté en passant par Internet mon Webbook ici.
+[33:53] Et là, si je vais dans l'exécution, regardez, vous pouvez voir que j'ai une exécution.
+[33:57] C'est le Webbook qui a démarré,
+[33:59] qui a exécuté le bloc texte ici,
+[34:02] et qui a envoyé la réponse.
+[34:05] Donc, ça marche parfaitement.
+[34:06] Et si vous voulez le faire en interne, juste, je le précise,
+[34:10] on peut faire exactement la même chose avec ces deux trucs-là.
+[34:13] When executed by another workflow,
+[34:15] et à la place du HTTP, vous mettez Execute workflow.
+[34:18] Ça, c'est comme un Webbook interne, et c'est plus sécurisé.
+[34:24] OK, donc voilà, le Webbook, c'est un peu le parallèle complémentaire du HTTP Request.
+[34:31] Le HTTP Request, vous contactez un service,
+[34:33] le Webbook, c'est un service extérieur qui vous contacte directement.
+[34:39] Et bien maintenant, on va passer vraiment au use case.
+[34:42] On va implémenter ça, on va en faire quelque chose,
+[34:44] et vous allez voir qu'on va faire quelque chose de super utile.
+[34:47] Un workflow qui a l'air simple et qui pourtant répond
+[34:51] au problème de la plupart des entreprises,
+[34:53] et c'est peut-être le premier workflow à mettre dans toutes les entreprises
+[34:56] si vous faites des intégrations à l'unité, en freelance par exemple.
+[35:01] Regardez.
+[35:02] Je vous ai même préparé une petite image.
+[35:03] C'est un workflow très simple, mais on va avoir besoin des principes qu'on a vus là.
+[35:07] On va créer un formulaire de leadgen.
+[35:10] Donc c'est vraiment le formulaire que vous allez mettre sur votre site Web
+[35:12] et qui va permettre de récupérer les contacts des leads.
+[35:16] Ensuite, dès qu'on récupère les informations,
+[35:19] on va récupérer les infos dans un Weten grâce à un Webbook.
+[35:24] Ensuite, grâce à EpiFile, on va aller enrichir le profil LinkedIn de la personne.
+[35:28] Et enfin, on va envoyer une notification Slack
+[35:32] pour qu'un commercial puisse appeler le lead le plus rapidement possible.
+[35:36] Parce que vous savez, chaque minute qui passe, on perd en conversion.
+[35:39] Au bout d'une heure d'attente, on a perdu 70% de conversion.
+[35:43] Donc on veut que les commerciaux appellent le plus vite possible
+[35:45] et on va leur faire économiser du temps sur la recherche
+[35:47] en prémachant l'enrichissement pour eux.
+[35:50] Ok, pas mal !
+[35:52] Et donc on passe à l'action.
+[35:54] On a notre bloc EpiFile ici, qui va nous permettre de scraper LinkedIn.
+[35:58] Ok, c'est top !
+[35:59] Ça, on en a pas besoin.
+[36:00] On a un Webbook qui va nous permettre de récupérer l'information
+[36:06] de notre formulaire.
+[36:07] On va commencer par créer notre formulaire de leadgen.
+[36:11] Et pour ça, on va utiliser une application qui s'appelle Tali.
+[36:15] Tali a l'avantage d'être gratuite et super performante.
+[36:18] Et c'est un peu une tête de notion.
+[36:23] Voilà, comme ça, c'est plutôt minimaliste.
+[36:25] On va créer un formulaire.
+[36:27] On va l'appeler leadgen.
+[36:29] Leadgen.
+[36:31] Et on va poser en question pour faire simple.
+[36:33] Pardon, on s'en fiche.
+[36:35] Voilà, on va ajouter une question.
+[36:39] On va ajouter une question.
+[36:45] Voilà.
+[36:47] Prénom.
+[36:52] On va aller tuer une question.
+[36:54] Je me perds un peu.
+[36:55] On va mettre une question email.
+[36:59] Et on va mettre une question URL-LinkedIn.
+[37:02] Et voilà, mini formulaire de leadgen.
+[37:05] Évidemment, dans la vraie vie, on demande rarement l'URL-LinkedIn.
+[37:09] Et ce qu'on va faire, c'est qu'à partir du nom de la personne et de l'email,
+[37:12] on va pouvoir utiliser d'autres API pour retrouver lui-même l'URL-LinkedIn.
+[37:18] On va pas le demander directement.
+[37:19] Là, pour l'exemple, on va gagner du temps.
+[37:21] On va le demander.
+[37:22] Ok.
+[37:22] Je publie ce formulaire.
+[37:24] Il est ici.
+[37:25] C'est magnifique.
+[37:27] Regardez.
+[37:28] Voilà, j'ai mon petit formulaire.
+[37:30] Antoine.
+[37:33] Antoine Hatz.
+[37:35] Salut, c'est toi.
+[37:36] URL-LinkedIn.
+[37:38] J'envoie formulaire envoyé.
+[37:40] Et donc là, dans Submission, j'ai la réponse.
+[37:43] Maintenant, comment je prends cette réponse ?
+[37:45] Et je l'envoie dans N8N.
+[37:47] La réponse, messieurs dames, c'est un web-book.
+[37:50] Alors oui, on pourrait le faire avec N8N.
+[37:52] Mais nous, on va le faire avec un web-book.
+[37:54] Ah oui, d'ailleurs, je ne vais pas préciser.
+[37:56] Mais quand vous allez ici dans Trigger,
+[38:00] tous les triggers, ce sont des web-books.
+[38:03] De même que quand vous allez dans Action,
+[38:05] tous les blocs ici, ce sont des appels HTTP.
+[38:08] Quand vous allez dans Trigger,
+[38:10] tous les triggers, ce sont des web-books.
+[38:12] Déjà pré-remplis.
+[38:14] Mais là, nous, on va le faire les choses de façon row.
+[38:17] Donc, on va connecter en web-book.
+[38:20] Ok.
+[38:20] Connect.
+[38:22] Et là, il nous demande l'URL de notre web-book.
+[38:26] Oui, en effet, l'URL de notre web-book.
+[38:29] Et ce qu'on va faire, c'est qu'on va venir récupérer ici notre web-book.
+[38:33] On va l'appeler, admettons, Tali.
+[38:36] Tali va nous envoyer la donnée du formulaire.
+[38:39] Donc, il faut bien qu'on pense à mettre en post.
+[38:41] Ok.
+[38:42] En ProductionURL, on va le faire direct.
+[38:44] On est des fous.
+[38:45] La différence, c'est que le test URL, le web-book s'allume.
+[38:49] Oui, ben si, on va faire en TestURL.
+[38:51] Comme ça, vous allez voir.
+[38:53] Le web-book s'allume uniquement quand vous appuyez sur Démarrer.
+[38:57] Ok.
+[38:58] Et là, on va faire connect.
+[39:02] Event log.
+[39:03] Donc voilà, il n'y a rien eu pour le moment.
+[39:05] Comme on a retiré le response to web-book,
+[39:07] ici, il faut mettre en response immediately.
+[39:10] 
+[39:11] On reteste.
+[39:13] Regardez.
+[39:14] 
+[39:16] Event log.
+[39:18] On peut resend.
+[39:20] Et voilà.
+[39:21] Et ici, on a l'information que nous envoie Tali.
+[39:26] Ok.
+[39:28] Et on a...
+[39:32] 
+[39:33] Et donc, on récupère l'information envoyée par Tali.
+[39:35] Et on va pouvoir la réutiliser.
+[39:37] Et donc, on va aller enrichir ce profil LinkedIn.
+[39:41] Ça, on baza, on n'a plus besoin.
+[39:46] Ça, vous vous rappelez, c'est notre blog de tout à l'heure.
+[39:48] C'est EpiFy.
+[39:50] On n'y a pas touché depuis tout à l'heure.
+[39:52] EpiFy.
+[39:53] On va venir mapper les informations dans notre G-Zone.
+[39:56] Donc ici, on a l'URL.
+[39:59] On a l'URL.
+[40:00] 
+[40:00] On va venir chercher dans notre web-book l'URL.
+[40:06] LinkedIn URL.
+[40:07] Il est là.
+[40:08] On va le mettre.
+[40:11] On va le mettre au bon endroit.
+[40:12] Vous voyez, ici, c'est bon.
+[40:19] On l'a.
+[40:21] Voilà, on fait Exécute workflow.
+[40:23] On voit que ça écoute.
+[40:24] Et maintenant, si je renvoie le formulaire,
+[40:30] Antoine, CelsiusTouch.io, notre URL, LinkedIn.
+[40:37] On envoie le formulaire.
+[40:38] Ça a été envoyé.
+[40:39] Ici, sur Tali, dans Event Log,
+[40:42] on voit que ça a bien été envoyé.
+[40:46] Ici, on l'a bien récupéré.
+[40:48] Alors ce qu'on va faire, c'est qu'on va le pin.
+[40:50] Pour le garder, on n'aura pas besoin de le refaire.
+[40:53] EpiFy a bien tourné.
+[40:54] Ça nous renvoie bien les informations LinkedIn.
+[40:58] Il ne nous reste plus qu'à connecter Slack.
+[41:01] Et on va envoyer un message.
+[41:06] Voilà, Message Action ici.
+[41:11] Send message.
+[41:13] On va se connecter.
+[41:14] Franchement, ça marche vraiment bien.
+[41:17] Slack.
+[41:20] Si vous avez besoin de vous envoyer à vous-même des notifications,
+[41:23] moi je passe souvent soit par Slack, soit par Telegram.
+[41:28] Là, vous ajoutez Slack.
+[41:29] Vous devez avoir l'habitude.
+[41:30] Vous cliquez sur OpenDoc.
+[41:31] Vous suivez les informations qui sont là.
+[41:34] Using hosts.
+[41:35] On va sur Slack.
+[41:37] API page.
+[41:40] Create an app.
+[41:41] From scratch.
+[41:44] App name.
+[41:45] LinkedIn.
+[41:47] Workplace.
+[41:48] Je vais prendre celui-là.
+[41:49] On crée l'application.
+[41:51] Et là, on a toutes les informations qu'on doit redonner à LinkedIn.
+[41:56] Ça vous avez l'habitude normalement.
+[41:58] Et donc en client ID, nous avons ça.
+[42:01] En client secret, nous avons ça.
+[42:05] Voilà, le callback, il faut le redonner à Slack normalement.
+[42:09] Qu'est-ce qu'on nous dit ?
+[42:11] On le met.
+[42:12] Ah oui, dans feature.
+[42:13] Hosts.
+[42:14] Redirect URL.
+[42:16] Donc, on sauvegarde.
+[42:19] Redirect URL.
+[42:21] On ajoute l'URL de nmiten.
+[42:23] Save URL.
+[42:25] Et voilà, là on a connecté notre Slack.
+[42:27] Normalement, c'est bon.
+[42:29] Voilà, host token.
+[42:31] Donc, on revient là.
+[42:32] Ah voilà, scoop.
+[42:35] Voilà, on a mis l'URL.
+[42:36] Maintenant, on ajoute le scope.
+[42:38] Tout ça, c'est écrit sur la page nmiten.
+[42:40] Il est juste à suivre étape par étape.
+[42:42] On ajoute le scope.
+[42:44] Normalement, il va nous dire quel scope on veut.
+[42:47] Nous, on veut envoyer un message.
+[42:49] Donc, chat write.
+[42:51] 
+[42:52] Donc, on va faire chat write.
+[42:55] Parfait.
+[42:55] C'est le style dont on a besoin pour le moment.
+[42:58] Ensuite, on va faire install to workspace.
+[43:03] Ah voilà, install to host token.
+[43:06] Install to pixel potion.
+[43:08] C'est bon.
+[43:09] On installe.
+[43:11] On autorise.
+[43:13] Et voilà.
+[43:14] Et normalement, si je teste juste ça, on connecte sur Slack.
+[43:20] Voilà, pixel potion, c'est bon.
+[43:23] Connection successful.
+[43:26] Une fois le presidential ajouté, on peut simplement tester l'envoi d'un message.
+[43:30] Nous, on va l'envoyer dans un channel leads que j'ai créé pour l'occasion.
+[43:35] En option, vous pouvez mettre normalement include link to workflow.
+[43:42] Vous pouvez le désactiver.
+[43:44] On teste et ça fonctionne.
+[43:47] Regardez, je vous montre mon Slack.
+[43:49] Donc voilà, là, c'est le test.
+[43:50] Si on ne coche pas, ne pas inclure l'URL vers le workflow, ça fait ça.
+[43:55] Donc ici, ça marche bien.
+[43:57] On a coucou.
+[43:58] Maintenant, il nous suffit de mapper.
+[44:00] Donc voilà, on va faire nouveau lead.
+[44:05] On peut mettre un petit muscle.
+[44:08] Nouveau lead.
+[44:09] Et donc on va mettre Antoine Deschamps.
+[44:15] Vous avez l'habitude, on mappe.
+[44:18] Nouveau lead, Antoine Deschamps.
+[44:21] Et on va mettre son post et on va mettre sa boîte.
+[44:25] Vous voyez, on va faire un joli message que les sales vont pouvoir utiliser derrière.
+[44:30] Son site web, c'est toujours intéressant pour les sales d'avoir un accès rapide à son site web.
+[44:35] Job title.
+[44:37] Le nom de sa boîte.
+[44:39] Et voilà, l'e-mail.
+[44:41] On va le mettre juste là.
+[44:42] Et voilà, histoire de dire.
+[44:46] Regardez.
+[44:46] Et donc là, si on teste, j'ai un message qui arrive.
+[44:50] Avec nouveau lead, les informations sur le lead.
+[44:52] Il n'y a plus qu'à l'appeler.
+[44:53] Alors là, j'ai vraiment fait ça à l'arrache, c'est dégueulasse.
+[44:56] Mais dans l'idée, ça fonctionne.
+[44:59] Et là, les sales ont juste à être présents sur ce canal là.
+[45:02] Et hop, dès qu'ils ont une notification, ils appellent, ils envoient un mail, ils contactent le mec et c'est tout.
+[45:07] Et ça au quotidien, ça leur fait gagner énormément de temps.
+[45:10] Et surtout, ça va avoir un énorme impact sur le taux de conversion des leads entrant.
+[45:15] C'est vraiment le principal facteur sur la capacité à les convertir.
+[45:20] Alors voilà, c'était une grosse vidéo.
+[45:22] On a vu beaucoup de théories.
+[45:24] Un petit use case sympa qui marche bien.
+[45:26] Donc j'espère que ça vous a plu.
+[45:28] Même si ça vous a l'air un peu compliqué, c'est vraiment super super super important comme notion.
+[45:34] Donc il fallait qu'on y passe un jour ou l'autre.
+[45:36] Et au moins, si vous avez des bugs, vous pourrez revenir à cette vidéo.
+[45:39] Revenir à la structure des appels API.
+[45:42] Et voir précisément d'où peut venir votre problème.

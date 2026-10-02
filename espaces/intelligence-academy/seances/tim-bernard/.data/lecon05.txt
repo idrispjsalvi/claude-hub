@@ -1,0 +1,249 @@
+[00:00] Dans cette vidéo, nous allons voir le fonctionnement des conditions et des boucles sur N8N.
+[00:05] Vous allez voir, c'est un petit peu différent de ce qu'on a l'habitude de voir sur Make, par exemple.
+[00:10] Mais ça marche très très bien.
+[00:11] Je vous montre très rapidement comment ça marche, et après, on se fait un petit cas pratique
+[00:15] en créant notre premier petit jeu directement dans N8N. Vous allez voir, ça va être sympa.
+[00:22] Je pense que vous savez déjà ce qu'est une condition, c'est comme en français.
+[00:25] C'est un bloc qui va nous permettre de tester si une assertion est vraie.
+[00:31] Donc, par exemple, si on dit « j'ai un nombre, ce nombre est supérieur à 10 »,
+[00:36] soit c'est vrai, soit c'est faux, j'ai un texte, ce texte contient « bonjour », soit c'est vrai, soit c'est faux.
+[00:43] C'est ça une condition, tout simplement.
+[00:45] Je vais vous montrer très rapidement comment faire.
+[00:47] On a deux façons de le faire sur N8N.
+[00:50] Le premier, on a un bloc « if » ici.
+[00:55] « If », ça veut dire « si » en anglais, pour ceux qui ne savent pas.
+[00:58] Donc c'est très simple, c'est comme en français.
+[01:00] On va prendre, on va mettre une variable avant ici, avec toujours le bloc « edit field ».
+[01:09] Donc on va créer un nombre qui va valoir 15.
+[01:15] Et on va créer également un texte qui va valoir « bonjour ».
+[01:22] Comme ça, on a deux exemples.
+[01:25] On a nos variables qui sortent à droite.
+[01:28] Donc « if », ça veut dire « si », tout simplement.
+[01:31] Et si on clique dessus, on voit qu'ici on va pouvoir ajouter des conditions.
+[01:35] Donc on peut en mettre plusieurs, et elles vont se cumuler.
+[01:38] Soit il faut que les deux conditions soient respectées, si on sélectionne le « end »,
+[01:42] soit il faut que l'une des conditions soit respectée.
+[01:46] Donc admettons ici, pour que notre condition soit vraie,
+[01:51] on veut que le nombre soit supérieur à 15, à 0.
+[01:57] Voilà, supérieur à 0, c'est très bien.
+[02:00] Donc ici, vous voyez les conditions, faites attention,
+[02:03] elles dépendent bien du type de la variable.
+[02:05] J'ai fait une vidéo sur les variables et leur type.
+[02:09] Donc ici, nombre, c'est un nombre.
+[02:11] Donc il faut bien sélectionner le « is greater than » ici.
+[02:16] Ok ? Pas celui qui est dans « string ».
+[02:18] Sinon, vous risquez d'avoir des petits bœillés.
+[02:21] Et donc ce qu'on veut, c'est que le texte soit égal, dans « string » cette fois,
+[02:26] soit égal à « bonjour », c'est ce qu'on avait initialement.
+[02:30] Et là, on va voir que si on teste, l'output se présente ici.
+[02:36] Et donc là, comparé au bloc habituel, on peut voir qu'on a deux onglets.
+[02:40] Un onglet « true branch » ici, un onglet « false » ici.
+[02:44] Et on voit ici que la sortie est dans l'onglet « true ».
+[02:49] Ça veut dire que notre condition est bien respectée.
+[02:53] Et d'ailleurs, vous pouvez voir ici, aux petits « Validés »,
+[02:58] qui vont vous indiquer, pour chaque condition, est-ce qu'elle est bien respectée.
+[03:05] Si les conditions n'avaient pas été respectées, le résultat serait apparu dans « false ».
+[03:10] On va faire le test tout de suite.
+[03:13] Ici, admettons, je veux que le texte vaille « salut » au lieu de « bonjour ».
+[03:19] Et si j'exécute, voilà.
+[03:22] Ça arrive dans « false ». Pourquoi ?
+[03:24] La première condition, elle est toujours respectée.
+[03:27] 15 est bien supérieur à 0, ça, ça va.
+[03:31] Et on veut aussi la seconde condition.
+[03:34] La seconde condition, on veut que le texte qui vaut « bonjour » soit égal à « salut ».
+[03:40] On voit ici à la petite croix que c'est pas respecté.
+[03:43] Et donc, vu que l'une des deux conditions n'est pas respectée, l'ensemble va être faux.
+[03:49] Voilà. Donc ici, si on regarde ici, on a deux branches en sortie du bloc.
+[03:53] On a une branche « true », une branche « false », c'est ça qu'on va pouvoir connecter derrière.
+[03:58] Et donc, dernier petit détail, ici on a « n », donc il faut que les deux conditions soient respectées.
+[04:04] Mais si on avait mis « or », on va voir que là, à nouveau, la condition générale est respectée.
+[04:11] Pourquoi ? Parce qu'on a l'une des conditions qui est respectée et c'est suffisant.
+[04:19] Et ici, on voit bien que l'item sort sur la branche « true ».
+[04:25] Ok ? Donc ça, c'est le premier type de condition. Le « if », c'est celui qui est le plus naturel.
+[04:35] On a une variante de ce type-là qui est le « filter ».
+[04:40] Le « filter », c'est exactement la même chose, sauf que, regardez, il n'y a qu'une seule branche en sortie.
+[04:49] Il n'y a pas « true » ou « false ».
+[04:51] En fait, c'est comme s'il n'y avait que la branche « true » et qu'après la branche « false », on laissait vide.
+[04:58] C'est-à-dire que, si la condition est respectée, l'item va continuer son chemin.
+[05:04] Ok ? Là, admettons, je mets un truc... comment ça s'appelle ?
+[05:12] C'est... voilà. « Do nothing », juste histoire que vous voyiez le chemin parcouru.
+[05:23] Ok ? Là, on voit bien, ça passe par la branche « true », ça avance.
+[05:29] On aurait pu décider que ça continuait, si c'était « false », peu importe.
+[05:34] Voilà, ici, ça n'avance pas, on voit que c'est bien bloqué.
+[05:37] Et bien, en fait, le « filter », l'item continue que si la condition est respectée.
+[05:45] Et donc, si notre condition, c'est que le nombre soit supérieur à 0, voilà.
+[05:52] Ici, ça fonctionne.
+[05:55] Ok ? On voit que ça passe à travers.
+[05:58] Maintenant, si la condition n'était pas respectée, donc si on met que ce doit être
+[06:06] égal à 0, ici, on voit qu'on est dans l'onglet « discard », c'est l'équivalent de notre
+[06:11] onglet « false » sur le « if ». Et on voit que l'item est bloqué ici et qu'il ne va pas plus loin.
+[06:18] Donc voilà, sinon, c'est le même fonctionnement que le « if ».
+[06:21] Et enfin, on a une dernière variante pour les conditions qui s'appelle le « switch ».
+[06:27] Le « switch », qu'est-ce que c'est ? C'est l'addition de plusieurs « if » si vous voulez.
+[06:33] C'est comme si on avait ça.
+[06:37] Duplicate, et qu'on faisait ça comme ça.
+[06:46] Vous pouvez les mettre en chaîne, comme ça, il n'y a pas de problème.
+[06:49] Vous faites ce que vous voulez.
+[06:53] Ou même généralement, le « if », le « switch », c'est plutôt ça.
+[06:57] C'est plutôt sur la branche « false ».
+[07:00] Comme ça. Voilà. C'est plus correct.
+[07:04] Et donc, vous allez voir, c'est la même chose.
+[07:07] Si on clique, en fait, là, la différence, c'est que on peut rajouter des routing rules.
+[07:15] En fait, ce sont des branches, si vous voulez.
+[07:20] Chaque routing rules, si on l'appelle 1, 2, 3, si on regarde sur le canva, on a nos trois branches, 1, 2, 3.
+[07:34] Et donc là, vous allez définir toutes vos conditions.
+[07:36] Donc, première condition, si le nombre est supérieur à 0.
+[07:45] Très bien.
+[07:50] Deuxième condition, si le texte est non-nul, on va dire, « isNOTEMTEAT », voilà, n'est pas vide.
+[08:02] Non vide, appelons-le.
+[08:03] Et enfin, on va mettre un dernier type de condition qu'on n'a pas vu jusqu'à maintenant.
+[08:10] C'est, si aucune de ces règles n'est respectée, alors on va aller sur la dernière branche.
+[08:17] C'est ce qu'on a ici, le « fallback output ».
+[08:20] Donc, le « fallback output », en fait, si aucune de ces conditions n'est respectée, on peut mettre un « fallback output ».
+[08:31] Et donc là, soit ça va être une sortie dédiée, c'est le cas par défaut, soit on peut choisir l'une de nos autres branches qu'on a vu plus tôt.
+[08:42] Et donc, tous les items qui ne respectent aucune condition vont être redirigés, généralement on met un extra output.
+[08:49] Et là, vous pouvez voir, « number » supérieur à 0, « non vide » et « fallback », qui est la dernière condition.
+[08:57] Ok, si on teste maintenant, on voit que la première condition est respectée, la deuxième est aussi respectée,
+[09:07] mais dans le « switch », on sort sur la première branche qu'on rencontre.
+[09:11] Donc là, la première condition est respectée, 15 à supérieur à 0, donc on sort sur la première branche.
+[09:18] On le voit ici, on le voit ici.
+[09:23] Maintenant, si jamais ici, on avait égal à 0, la condition devient fausse, on le voit à la petite croix,
+[09:31] et donc là, l'item sort sur la seconde branche, non vide, on le voit ici.
+[09:38] Ok, on sort toujours dans la première branche dont on respecte la condition.
+[09:46] Et enfin, si ici, on avait avide, voilà, la condition devient fausse, et donc si on exécute,
+[09:54] on voit qu'on sort sur la troisième branche, le « fallback », qui est la sortie par défaut, si tout est faux.
+[10:02] Et là, on sort par le « fallback ».
+[10:05] Donc, ce sont les trois façons de faire une condition dans Ennuiten.
+[10:12] Ce qu'on va voir maintenant, c'est un type de condition un peu particulier, ce sont en fait les boucles.
+[10:22] Qu'est-ce que c'est une boucle ? Eh bien, c'est ni plus ni moins qu'une condition qu'on va vérifier plusieurs fois.
+[10:30] Donc, par exemple, une boucle, ça va être de la forme sur Ennuiten, tant que la condition est vraie, faite à l'action.
+[10:41] Je passe assez rapidement sur les boucles, parce qu'on n'en voit pas si souvent.
+[10:45] Ce sont des cas assez spécifiques qui sont un peu avancés, mais je vous en montre une simplement pour que vous sachiez que ça existe.
+[10:51] Donc là, pour l'exercice, on va simplement faire une toute petite boucle qui va compter jusqu'à 100, et qui après va sortir.
+[10:59] Donc, pour compter jusqu'à 100, on va créer un compteur qui, au début, vaut 0.
+[11:06] Et ce compteur, à chaque tour, on va faire juste un wait pour ne pas que ça aille trop vite et qu'on voit bien ce qui se passe.
+[11:17] Donc, on va attendre un dixième de seconde entre chaque tour.
+[11:22] Et ensuite, on va prendre ce compteur et on va lui donner la valeur, compteur plus 1.
+[11:38] Comme ça, notre compteur va compter.
+[11:41] Et donc, nous, ce qu'on veut, c'est qu'on passe une fois, on compte ici.
+[11:55] On compte ici.
+[11:57] Et donc ici, notre compteur vaut 1.
+[12:00] Et ce qu'on voudrait, c'est qu'on repasse dans ce compteur plein de fois jusqu'à ce que ça va y s'en.
+[12:06] Et dans l'Utl, on peut le faire tout simplement.
+[12:08] On va pouvoir faire ça.
+[12:10] Boucler le chemin.
+[12:10] Ça, c'est complètement nouveau.
+[12:12] Si vous utilisez Make, c'est pas du tout possible.
+[12:14] Et donc là, si j'exécute, vous allez voir que ça va tourner à l'infini.
+[12:18] Vous voyez, ça va vite et ça compte.
+[12:20] Là, 24, 28, 31, 33, 35, on voit mon compteur qui monte.
+[12:26] Et quand ça arrive à 100, on voudrait que ça s'arrête.
+[12:29] On voudrait que ça s'arrête, mais là, ça ne s'arrête pas.
+[12:32] Parce qu'en fait, il faut mettre une condition en plus pour que ça s'arrête.
+[12:36] Donc là, je l'ai arrêté manuellement.
+[12:39] Et on va juste rajouter une condition.
+[12:41] Si mon compteur est supérieur ou égal à 100, on va sortir de la boucle.
+[13:04] Voilà.
+[13:06] Et si mon compteur est inférieur à 100, on va faire la boucle.
+[13:11] D'accord ?
+[13:12] Et on va voir ce qui se passe.
+[13:16] Ici, on ne va même pas faire ça.
+[13:18] On va faire un set.
+[13:20] On va mettre un result.
+[13:23] Voilà, qui va voir la valeur du compteur.
+[13:27] Oh non, ça me fiche.
+[13:32] On va rester sur ça.
+[13:36] Et donc là, on voit qu'on compte.
+[13:38] C'est ce qu'on voulait.
+[13:39] On fait bien la boucle à chaque fois.
+[13:41] Et normalement, dès qu'on va arriver à 100, on va sortir.
+[13:46] Et voilà, on est arrivé à 100, on est sorti.
+[13:49] Et ici, l'item, c'est compteur égal 100.
+[13:52] Donc c'est exactement ce qu'on voulait.
+[13:55] Ça, c'est pour vous montrer une utilisation un peu originale à la fois.
+[13:58] Voilà, des conditions pour faire des opérations plusieurs fois.
+[14:02] C'est ce qu'on appelle des boucles.
+[14:05] Maintenant, ce que je vous propose, c'est une petite application concrète des conditions.
+[14:11] On va créer un petit jeu qui s'appelle le jeu mystère.
+[14:15] C'est un jeu typique qu'on avait l'habitude de faire pour apprendre à développer à l'époque.
+[14:22] Et donc là, on va créer un petit chat
+[14:23] où l'utilisateur va devoir deviner un nombre mystère entre 0 et 100.
+[14:28] Et à chaque fois, on va lui répondre, c'est plus, c'est moins, ou tu as gagné, t'as trouvé le bon nombre.
+[14:33] C'est tout simple.
+[14:34] On va faire ça là en deux minutes sur N8N, vous allez voir, c'est très très simple.
+[14:39] Pour l'interface, le chat, N8N a un bloc directement qui s'appelle chat.
+[14:44] Hop, chat trigger, qui est là.
+[14:50] OK, donc quand le chat reçoit un message, pour que vous voyez à quoi ça ressemble,
+[14:56] quand on l'affiche, ça ouvre une boîte de chat ici et on peut envoyer des messages.
+[15:04] Ici, il n'y a rien derrière, donc forcément, on ne va pas avoir de réponse.
+[15:09] Ce chat, plus tard, vous allez pouvoir le personnaliser, le modifier
+[15:14] et intégrer énormément de choses derrière, pourquoi pas une IA.
+[15:17] Et vous pourrez même l'intégrer sur votre site web, donc c'est super utile pour énormément de choses.
+[15:24] Ce chat, on va, donc déjà si on fait le test.
+[15:32] OK, admettons, on envoie 10.
+[15:35] Bon, on a un item qui sort.
+[15:42] On a un item qui sort.
+[15:44] Et vous voyez, chat input, ça ouvre 10.
+[15:46] Ah oui, alors attendez, on va déjà mettre un output.
+[15:50] Il faut savoir que le chat, la sortie du chat, c'est toujours un output.
+[15:59] C'est toujours une variable qui s'appelle soit output, soit texte.
+[16:07] Donc on va mettre notre output ici.
+[16:11] Et maintenant, ce qui va se passer, c'est que chaque fois qu'on envoie 10, il va nous envoyer reçu.
+[16:15] OK, parce que c'est ce que j'ai mis.
+[16:18] Maintenant, ce qu'on voit, toujours quand je fais mes tests, j'ai l'habitude d'épingler les données.
+[16:24] Comme ça, on ne va pas avoir besoin à chaque test de rouvrir le chat et d'écrire 10 à nouveau.
+[16:31] Hop, donc on va pin les données, comme ça elles sont sauvegardées.
+[16:35] Et on a chat input égale 10.
+[16:38] Donc chat input, ça va être notre nombre.
+[16:40] Moi ce que j'aime bien faire, c'est mettre toujours au début un set avec les variables qui m'intéressent.
+[16:49] Donc moi la variable, c'est un string et c'est le chat input.
+[16:54] Et le reste, ça ne va pas trop m'intéresser.
+[16:57] Action, je m'en fiche, session ID, on s'en fiche.
+[17:01] C'est ce qui est utilisé en interne par N8N pour faire le suivi de la conversation.
+[17:06] Ici, ça ne m'intéresse pas.
+[17:10] Par contre, ce dont on va avoir besoin, c'est un nombre mystère.
+[17:14] Pour le moment, ce nombre mystère, on ne va pas trop se casser la tête.
+[17:18] On va le définir.
+[17:19] Et plus tard, on fera une version beaucoup plus avancée avec des sauvegardes, avec des leaderboards, etc.
+[17:24] Mais pour le moment, ce qu'on va faire, c'est que le nombre mystère, on va dire qu'il est égal à 37.
+[17:32] Et donc là, en sortie, on a notre nombre et notre mystère.
+[17:35] Ce qu'on veut maintenant, on va pouvoir le faire avec un switch.
+[17:43] Et donc, si le nombre est supérieur au nombre mystère, première branche.
+[18:02] Deuxième branche.
+[18:04] Le nombre est inférieur au nombre mystère.
+[18:13] Deuxième branche.
+[18:15] Nombre inférieure à mystère.
+[18:19] Et enfin, la dernière branche qui va nous intéresser.
+[18:22] Le nombre est égal à mystère.
+[18:30] Voilà.
+[18:30] J'aurais pu mettre un fallback ici à la place, mais tant qu'on peut, je préfère déclarer les conditions de façon explicite, comme ça on est sûr de ne pas se perdre.
+[18:42] Le nombre égal le nombre mystère.
+[18:46] Ok, ici on a notre switch.
+[18:51] Et ce qu'on va faire, c'est que pour chaque output, on va définir un petit message qu'on va vouloir répondre.
+[19:01] Donc, on a notre output ici.
+[19:06] Et donc, si le nombre est supérieur au nombre mystère, on va répondre, c'est moins.
+[19:19] Si le nombre est inférieur au nombre mystère, on va répondre, c'est plus.
+[19:33] Et enfin, si le nombre est égal au nombre mystère, on va répondre, bravo.
+[19:44] Le nombre mystère était bien.
+[19:49] Et ici, on va venir juste...
+[19:56] On va venir juste...
+[20:05] C'était combien ? C'était 37 là.
+[20:08] On va venir chercher la valeur du nombre mystère ici.
+[20:13] Ce qu'on va faire, on va exécuter un coup.
+[20:23] Bravo, le nom mystère était bien.
+[20:24] Là, on voit qu'on passe bien par cette branche là.
+[20:27] Et donc, était bien mystère.
+[20:33] Le nom mystère était bien 37.
+[20:35] On aurait pu l'écrire, mais c'est juste histoire de lire.
+[20:39] Et donc là, si on exécute ce petit workflow, on va essayer de jouer.
+[20:47] 50, c'est moins.
+[20:49] 25, c'est plus.
+[20:51] 40, c'est moins.
+[20:54] 30, c'est plus.
+[20:56] 35, c'est plus.
+[20:59] 37, bravo.
+[21:01] Le nom mystère était bien 37.
+[21:03] Et voilà, c'est un mini-jeu qu'on a fait en 5 minutes simplement pour tester les conditions.
+[21:08] Maintenant, on voudrait que le nom mystère soit généré à chaque partie,
+[21:12] qu'il puisse être changé, qu'il dépend du joueur,
+[21:14] et pourquoi pas même avoir un leaderboard de tous les joueurs et de leurs scores, etc.
