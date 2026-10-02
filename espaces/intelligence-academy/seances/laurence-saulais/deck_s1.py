@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Laurence SAULAIS — Séance 1 (ven. 2 oct. 2026, 9h-11h) : Les fondamentaux en profondeur. Charte TIA."""
+"""Laurence SAULAIS, séance 1 (ven. 2 oct. 2026, 9h-11h) : Les fondamentaux en profondeur. Charte TIA."""
 import importlib.util
 import os
 
@@ -50,7 +50,7 @@ pipeline("Le parcours", "Quatre séances, dans l'ordre de la proposition", [
 
 content("Le e-learning, remis dans l'ordre", None, [
     "**Avant S1 :  Comprendre l'IA sans jargon",
-    "**Avant S2 :  Focus Midjourney & Nano Banana, puis Claude — Les fondamentaux",
+    "**Avant S2 :  Focus Midjourney & Nano Banana, puis Claude : les fondamentaux",
     "",
     "**Avant S3 :  Claude pour Excel, puis Claude Cowork",
     "**Avant S4 :  Claude for Chrome",
@@ -113,11 +113,14 @@ content("Quiz · Question 5", "Bonus, si vous avez vu les dernières vidéos", [
     "**les pièces jointes et sa réponse. Au-delà, il « oublie » le début.",
 ])
 
-content("Vos exercices du e-learning", "« Spécifiquement pour toi » : on les fait ensemble", [
-    "Ouvrez à l'écran l'exercice qui vous a bloquée.",
-    "On lit la consigne, vous le faites, je reprends la main si besoin.",
+content("Votre exercice retrouvé", "« Structurer une synthèse médico-sociale complexe »", [
+    "Vous aviez raison : la demande n'est pas claire. Cherchons pourquoi.",
     "",
-    "**Ce qu'on en retient : comment aborder seule les suivants.",
+    "**Pas de consigne : c'est un prompt à coller dans ChatGPT, rien ne le dit.",
+    "**Il demande vos notes réelles sur un usager : jamais, on l'a vu.",
+    "",
+    "**« Utilise GPT-4o » : un prompt ne choisit pas le modèle, l'interface oui.",
+    "**« La méthode de l'Intelligence Academy » : jamais définie.",
 ])
 
 # ── 2. Les fondamentaux ──────────────────────────────────────────────────────
@@ -173,10 +176,10 @@ content("Le cadre de vos données", "Pourquoi c'est votre compétence, pas un d�
 
 content("Vos données", "L'entraînement : au cas par cas, comme vous le souhaitez", [
     "**Par défaut : vous contribuez à améliorer le modèle. C'est un choix légitime.",
-    "**Dossier innovant : une conversation temporaire, exclue de l'entraînement.",
+    "**Dossier innovant : Nouveau chat › Temporaire, exclu de l'entraînement.",
     "",
-    "**Ou le réglage global : Paramètres › Contrôles des données.",
-    "Coupé, il vaut pour toutes vos conversations, jusqu'à le réactiver.",
+    "**Piège : enregistré, le chat temporaire reprend vos réglages habituels.",
+    "Le réglage global (Contrôles des données) vaut, lui, pour tout le compte.",
 ])
 
 content("Vos données", "Ce que l'outil retient de votre quotidien", [
@@ -184,7 +187,7 @@ content("Vos données", "Ce que l'outil retient de votre quotidien", [
     "**Paramètres › Personnalisation : la consulter, l'effacer, la couper.",
     "",
     "**Mémoire et entraînement sont deux réglages distincts.",
-    "La conversation temporaire n'utilise ni ne crée de souvenirs.",
+    "Temporaire « non personnalisé » : ni lecture ni création de souvenirs.",
 ])
 
 content("Vos données", "En situation professionnelle : le cadre de l'établissement", [
@@ -230,18 +233,30 @@ tia.slide_recap(prs, "Les fondamentaux", [
 tia.slide_section(prs, "3", "La pratique", "Partage d'écran : vous faites, je montre")
 
 content("Exercice · Étape 1", "Votre base de contexte personnelle", [
-    "Un texte que vous collerez en tête de vos échanges avec l'IA :",
+    "Un texte rangé dans vos instructions personnalisées, lu à chaque échange :",
     "**qui vous êtes, votre métier visé, votre façon d'écrire, vos exigences.",
     "",
-    "On l'écrit ensemble, puis on la teste dans ChatGPT.",
+    "**Où : Paramètres › Personnalisation › Instructions personnalisées.",
+    "On l'écrit ensemble, on l'enregistre, puis on la teste dans ChatGPT.",
 ])
 
-content("Exercice · Étape 2", "Le premier support : une réunion partenaires", [
-    "Projet fictif : lutter contre l'isolement des personnes âgées à domicile.",
-    "**Livrable : l'ordre du jour d'une réunion de lancement avec les partenaires.",
+content("Exercice · Étape 2", "Votre exercice, réécrit avec votre méthode", [
+    "**Contexte : vous, votre poste visé, et des notes fictives (slide suivante).",
+    "**Consigne : synthèse des besoins, plan d'action, mail aux partenaires.",
     "",
-    "Avec la méthode : contexte, consigne, format, vérification.",
-    "Puis : « Contredis-moi : qu'est-ce qui manque à cet ordre du jour ? »",
+    "**Format : longueur, ton et structure de chacun des trois livrables.",
+    "**Vérification : « Contredis-moi : qu'est-ce qui manque ou est faux ? »",
+])
+
+content("Exercice · Les notes fictives à coller", None, [
+    "Mme A., 84 ans, veuve, vit seule. Sa fille, à Lyon, appelle le dimanche.",
+    "Ne sort plus depuis une chute en août. Une voisine fait ses courses.",
+    "Refuse le portage de repas (« pas besoin »). Aide ménagère 2 h par semaine.",
+    "",
+    "Visite : frigo presque vide, courrier non ouvert, moral bas.",
+    "Aimait le club de belote du quartier. Aucun transport adapté identifié.",
+    "",
+    "**Situation inventée pour l'exercice : aucune personne réelle.",
 ])
 
 content("Exercice · Étape 3", "Votre cadre de confidentialité", [
@@ -257,7 +272,7 @@ tia.slide_section(prs, "4", "Les devoirs", "Pour la séance 2, lundi 13 octobre"
 content("Devoirs · avant le 13 octobre", None, [
     "**1.  Finir « Comprendre l'IA sans jargon » (hallucinations, contexte)",
     "**2.  Suivre « Focus Midjourney & Nano Banana »",
-    "**3.  Suivre « Claude — Les fondamentaux », compte créé en séance",
+    "**3.  Suivre « Claude : les fondamentaux », compte créé en séance",
     "",
     "**4.  Utiliser votre base de contexte sur 3 situations réelles",
     "**5.  Écrire vos limites d'usage personnelles (5 lignes)",
