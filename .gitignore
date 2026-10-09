@@ -6,6 +6,7 @@
 
 # Données élèves téléchargées (API TIA, CRM) : jamais versionnées
 espaces/*/seances/**/.data/
+espaces/*/seances/**/preparation-*.md
 
 # Systeme et build
 .DS_Store
