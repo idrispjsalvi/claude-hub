@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Timothé BERNARD : séance 1 (ven. 2 oct. 2026, 13h-15h) : n8n et webhooks, sur le cas artisans. Charte TIA."""
+"""Timothé BERNARD : séance 1, v2 (ven. 9 oct. 2026, 13h-15h) : Tally → n8n → Airtable pour Ylang Ylang. Charte TIA."""
 import importlib.util
 import os
 
@@ -9,7 +9,7 @@ _spec = importlib.util.spec_from_file_location("tia", os.path.join(KIT, "lib-sli
 tia = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(tia)
 
-OUTPUT_PATH = os.path.join(HERE, "tim-bernard-s1-n8n-webhooks.pptx")
+OUTPUT_PATH = os.path.join(HERE, "tim-bernard-s1-v2-tally-n8n-airtable.pptx")
 KICKER = "SÉANCE 1 / 4 · TIMOTHÉ BERNARD"
 
 # _draw_blocks_on_slide pose chaque ligne dans une boîte de 0.45" : une ligne qui passe à la ligne
@@ -41,209 +41,240 @@ def content(header, subtitle, bullets):
 prs = tia.new_prs()
 
 # ── Ouverture ────────────────────────────────────────────────────────────────
-tia.slide_cover(prs, KICKER, "n8n et les webhooks, compris pour de bon",
-                "Ta première demande d'artisan, reçue et triée",
-                "Vendredi 2 octobre 2026 · 13h-15h · Idris Salvi")
+tia.slide_cover(prs, KICKER, "Ta première démo Ylang Ylang",
+                "Tally → n8n → Airtable, testé avec une vraie demande",
+                "Vendredi 9 octobre 2026 · 13h-15h · Idris Salvi")
 
-content("Ce qu'on a fixé le 25 septembre", None, [
-    "**Le fil rouge : une offre d'automatisation pour artisans, puis TPE/PME.",
-    "**Le cas d'usage : demande reçue → formulaire → devis IA → l'artisan valide.",
+content("Ce que tu m'as écrit hier", None, [
+    "> j'aimerais bien qu'on voit via Webhook et qu'on fasse marcher",
+    "> une vraie automatisation",
     "",
-    "**Le projet médical (ECN) reste de côté pendant la formation.",
-    "**Objectif de commercialisation : 1er décembre 2026.",
+    "**Ylang Ylang : site, hébergement et gestion des demandes pour artisans.",
+    "**Leur problème : ils répondent tard et ne relancent jamais leurs devis.",
+    "**Le livrable : un workflow testé avec une vraie soumission Tally.",
 ])
 
-content("Ce que tu m'as demandé hier", None, [
-    "> je veux vraiment poncer n8n un max",
-    "> ce que j'aimerai c'est vraiment comprendre moi meme sans IA à coté",
+content("Aujourd'hui, et plus tard", None, [
+    "**En séance : architecture, Tally, zone, Airtable, les deux mails, test réel.",
+    "**En séance : on dessine la relance J+3 ensemble.",
     "",
-    "**Donc aujourd'hui : n8n uniquement, et c'est toi qui tiens la souris.",
-    "**Pas de Claude pour construire. Tu comprends chaque nœud avant le suivant.",
+    "**Devoirs : tu construis la relance J+3 et la gestion des erreurs.",
+    "**Séance 2 : le prix, et le passage de la démo à un vrai artisan.",
+    "**Hors périmètre (ton choix) : l'IA pour le prix, le site web.",
 ])
 
-content("Le déroulé de cet après-midi", None, [
-    "**1.  Quiz (10 min) sur la vidéo et les fiches que tu as vues",
-    "**2.  Ton workflow d'hier soir, relu ensemble (10 min)",
-    "**3.  Webhook, Edit Fields, Switch : les 3 nœuds qui t'ont perdu (15 min)",
+content("Le déroulé", "Chaque bloc : 5 min de théorie, puis tu pratiques", [
+    "**1.  Quiz (10 min)  ·  2.  Architecture : 3 workflows (15 min)",
+    "**3.  Tally → Webhook (20 min)  ·  4.  Le Switch zone (15 min)",
     "",
-    "**4.  La pratique (60 min) : ton premier workflow « demande artisan »",
-    "**5.  Les devoirs et la date de la séance 2 (15 min)",
+    "**5.  Airtable (15 min)  ·  6.  Les deux mails (20 min)",
+    "**7.  Test réel (10 min)  ·  8.  Relance J+3 et devoirs (10 min)",
 ])
 
 # ── 1. Quiz ──────────────────────────────────────────────────────────────────
-tia.slide_section(prs, "1", "Quiz d'ouverture", "Cinq questions sur la découverte de n8n")
+tia.slide_section(prs, "1", "Quiz d'ouverture", "Quatre questions sur ce que tu as vu")
 
-content("Quiz · Question 1", "Par quoi commence toujours un workflow ?", [
-    "A.  Une action (envoyer un mail, écrire dans une base)",
-    "B.  Un trigger, le déclencheur, repéré par le petit éclair",
-    "C.  Une condition IF",
+content("Quiz · Question 1", "Une demande arrive à 3h du matin", [
+    "Quelle URL ton formulaire Tally doit-il appeler ?",
+    "A.  L'URL de test du Webhook",
+    "B.  L'URL de production du Webhook",
     "",
-    "**Réponse B : manuel, planifié, webhook, formulaire... il en faut un.",
+    "**Réponse B : l'URL de test n'écoute que quand tu cliques sur « écouter ».",
+    "**La production tourne seule, une fois le workflow activé.",
 ])
 
-content("Quiz · Question 2", "Filter, IF ou Switch ?", [
-    "Une demande peut concerner la plomberie, l'électricité ou autre chose.",
-    "Quel nœud pour envoyer chaque cas sur son propre chemin ?",
+content("Quiz · Question 2", "Ton Webhook reçoit ceci en POST", [
+    "` { \"code_postal\": \"34700\" }",
+    "Quelle expression lit le code postal dans le nœud suivant ?",
+    "A.  {{ $json.code_postal }}        B.  {{ $json.body.code_postal }}",
     "",
-    "**Switch : un IF à plusieurs branches.",
-    "**IF : deux branches (vrai / faux). Filter : on continue ou on s'arrête.",
+    "**Réponse B : tout est rangé dans « body ». A renvoie du vide, sans erreur.",
+    "**Et avec Tally ? Ce n'est pas si simple. Réponse dans 20 minutes.",
 ])
 
-content("Quiz · Question 3", "Deux façons d'aller chercher une donnée", [
-    "` {{ $json.prenom }}",
-    "` {{ $('Params').item.json.prenom }}",
+content("Quiz · Question 3", "Ta capture de la semaine dernière", [
+    "Edit Fields1 et Edit Fields2 sont branchés sur la sortie 0 du Switch.",
+    "Que reçoit chacun des deux ?",
     "",
-    "**La 1re lit le nœud juste avant, quel qu'il soit.",
-    "**La 2e lit un nœud précis, par son nom : plus sûr quand le workflow grandit.",
+    "**Le même item : ton Switch n'a qu'une règle, donc une seule sortie.",
+    "**Pour trier, il faut une règle par cas et un nœud par sortie.",
 ])
 
-content("Quiz · Question 4", "Un « item », c'est quoi ?", [
-    "A.  Un nœud du workflow",
-    "B.  Un objet JSON, entre accolades : une personne, une demande, une ligne",
-    "C.  Une exécution",
+content("Quiz · Question 4", "Aucune règle du Switch ne correspond", [
+    "Que devient la demande ?",
     "",
-    "**Réponse B : 3 demandes reçues = 3 items, chaque nœud traite chacun.",
+    "**Par défaut : elle est abandonnée, sans erreur. Tu ne le vois pas.",
+    "**Option « Fallback Output » → « Extra Output » : une sortie de secours.",
+    "C'est exactement le cas « hors zone » qu'on va construire.",
 ])
 
-content("Quiz · Question 5", "Ton workflow a planté cette nuit", [
-    "Où vas-tu voir ce qui s'est passé ?",
+# ── 2. Architecture ──────────────────────────────────────────────────────────
+tia.slide_section(prs, "2", "L'architecture", "Un ou deux workflows ? En fait, trois")
+
+content("Théorie · Un workflow, un déclencheur", None, [
+    "**Une demande arrive : c'est un événement → Webhook.",
+    "**Chaque matin, on cherche les devis à relancer : c'est une heure → Schedule.",
+    "**Un workflow plante : c'est une erreur → Error Trigger.",
     "",
-    "**L'onglet Executions : les exécutions en erreur sont en rouge.",
-    "**Tu cliques dessus et tu vois, nœud par nœud, les données entrées et sorties.",
+    "Trois déclencheurs différents = trois workflows.",
+    "Tu n'as pas à choisir : la nature du déclencheur décide pour toi.",
 ])
 
-# ── 2. Ton workflow d'hier soir ──────────────────────────────────────────────
-tia.slide_section(prs, "2", "Ton workflow d'hier soir", "Tu as bien fait de t'arrêter là")
+pipeline("Tes trois workflows", "Ils ne se parlent pas : ils partagent la base Airtable", [
+    "Demandes\nWebhook, à chaque envoi Tally",
+    "Relances\nSchedule, chaque matin",
+    "Erreurs\nError Trigger, à chaque plantage",
+], "Aujourd'hui on construit « Demandes ». Les deux autres sont tes devoirs.")
 
-pipeline("Ce que montre ta capture", "Webhook POST → Edit Fields → Switch → deux Edit Fields", [
-    "Webhook\nPOST, 1 item reçu",
-    "Edit Fields\n1 item",
-    "Switch\nmode Rules",
-    "Edit Fields1 et 2\ntous deux sur « 0 »",
-], "Les deux branches partent de la même sortie : l'item va dans les deux.")
-
-content("Pourquoi ça t'a perdu", "Le Switch n'aiguille rien s'il n'a qu'une sortie", [
-    "**Chaque règle du Switch crée une sortie : 0, 1, 2...",
-    "**Brancher deux nœuds sur la sortie 0 = les deux reçoivent la même donnée.",
+content("Pratique · Ta base Airtable", "À vérifier avant de toucher à n8n", [
+    "**Statut : nouveau, devis envoyé, relancé, gagné, perdu.",
+    "**Faut-il ajouter « hors zone » ? On le décide au bloc 4.",
+    "**Date de la demande : n8n la remplira.",
     "",
-    "Pour trier, il faut une règle par cas, et un nœud par sortie.",
-    "On le reconstruit proprement tout à l'heure, toi aux commandes.",
+    "**Il manque « Date devis envoyé » : sans elle, pas de calcul J+3.",
+    "Qui la remplit ? L'artisan, à la main, quand il envoie son devis.",
 ])
 
-# ── 3. Les trois nœuds ───────────────────────────────────────────────────────
-tia.slide_section(prs, "3", "Les trois nœuds clés", "Webhook, Edit Fields, Switch")
+# ── 3. Tally → Webhook ───────────────────────────────────────────────────────
+tia.slide_section(prs, "3", "Tally → Webhook", "Lire les vraies données avant de les mapper")
 
-pipeline("Le chemin d'une demande d'artisan", "Ce qu'on construit aujourd'hui", [
-    "Le client\nremplit un formulaire",
-    "Webhook\nn8n reçoit la demande",
-    "Edit Fields\non garde l'utile",
-    "Switch\non trie par métier",
-    "Respond\n« demande reçue »",
-], "Plus tard : un nœud IA rédige le brouillon de devis, l'artisan valide.")
-
-content("Le Webhook", "L'inverse du HTTP Request", [
-    "**HTTP Request : n8n appelle un autre service.",
-    "**Webhook : un autre service (site, formulaire) appelle n8n.",
+content("Théorie · Ce que Tally envoie vraiment", None, [
+    "` { \"eventType\": \"FORM_RESPONSE\", \"data\": { \"fields\": [",
+    "`   { \"label\": \"Code postal\", \"value\": \"34700\" },",
+    "`   { \"label\": \"Type de travaux\", \"value\": [\"a1b2c3\"], \"options\": [...] }",
+    "` ] } }",
     "",
-    "**URL de test : elle n'écoute que pendant que tu cliques sur « écouter ».",
-    "**URL de production : elle tourne seule, une fois le workflow activé.",
+    "**Les réponses sont dans un tableau, pas dans des champs nommés.",
+    "**Menu déroulant : value est un identifiant. Le libellé est dans options.",
 ])
 
-content("Le Webhook", "Où arrive la donnée ?", [
-    "En POST, la demande arrive dans le « body » de l'item.",
-    "` {{ $json.body.type_travaux }}",
+content("Pratique · Brancher Tally", "Partage d'écran : c'est toi qui cliques", [
+    "**1.  Webhook : copie l'URL de test, clique sur « écouter ».",
+    "**2.  Tally → Integrations → Webhooks : colle l'URL, envoie une réponse.",
+    "**3.  Lis l'OUTPUT : où sont le code postal et le type de travaux ?",
     "",
-    "**À côté : headers, query, params. Tu peux les ignorer pour l'instant.",
-    "**Réflexe : regarde toujours l'onglet OUTPUT avant de mapper.",
+    "**4.  Adapte ton Edit Fields : un champ propre par information.",
+    "` {{ $json.body.data.fields.find(f => f.label == 'Code postal').value }}",
 ])
 
-content("Edit Fields (Set)", "Le nœud qui fait le ménage", [
-    "**Il ne garde que les champs utiles et leur donne un nom clair.",
-    "**Exemple : body.type_travaux devient simplement « metier ».",
+# ── 4. Le Switch zone ────────────────────────────────────────────────────────
+tia.slide_section(prs, "4", "Le Switch zone", "L'artisan ne se déplace pas partout")
+
+content("Théorie · Le Switch", "Une règle = une sortie", [
+    "**Chaque règle crée sa sortie : 0, 1, 2...",
+    "**L'item sort par la première règle vraie.",
+    "**Fallback Output : ce qui ne correspond à rien a sa propre sortie.",
     "",
-    "Les nœuds suivants lisent des champs propres, pas tout le webhook.",
-    "Tu peux aussi y écrire des valeurs fixes : un tarif, un message.",
+    "Renomme les sorties : tu lis le workflow sans ouvrir le nœud.",
+    "Une liste de départements suffit : « commence par 34 », « 30 »...",
 ])
 
-content("Le Switch", "Une règle = une sortie", [
-    "**Règle 0 : metier = plomberie → sortie 0",
-    "**Règle 1 : metier = électricité → sortie 1",
-    "**Fallback output : aucune règle vraie → une sortie « à qualifier »",
+content("Pratique · Trier par zone", None, [
+    "**1.  Règle « dans la zone » : le code postal commence par l'un",
+    "**     des départements de l'artisan.",
+    "**2.  Fallback → Extra Output, renommé « hors zone ».",
     "",
-    "Par défaut, l'item sort par la première règle vraie.",
-    "Renomme les sorties : tu liras ton workflow sans l'ouvrir.",
+    "**3.  À décider : que reçoit un prospect hors zone ? Un refus poli, rien ?",
+    "**4.  Teste les deux cas avec deux réponses Tally différentes.",
 ])
 
-tia.slide_recap(prs, "Les trois nœuds clés", [
-    "1.  Webhook : un service extérieur appelle n8n. Test d'abord, production ensuite.",
-    "2.  En POST, la donnée est dans $json.body.",
-    "3.  Edit Fields : on garde l'utile, on renomme clairement.",
-    "4.  Switch : une règle par cas, un nœud par sortie, un fallback.",
-    "5.  Avant de mapper, on lit l'OUTPUT du nœud précédent.",
-])
+# ── 5. Airtable ──────────────────────────────────────────────────────────────
+tia.slide_section(prs, "5", "Airtable", "Chaque demande enregistrée, avec son statut")
 
-# ── 4. La pratique ───────────────────────────────────────────────────────────
-tia.slide_section(prs, "4", "La pratique", "Partage d'écran : tu fais, je reprends la main si besoin")
-
-content("Exercice · La demande de test", "Ce qu'envoie le formulaire d'un client", [
-    "` {",
-    "`   \"nom\": \"Mme Durand\",",
-    "`   \"type_travaux\": \"plomberie\",",
-    "`   \"description\": \"Fuite sous l'évier de la cuisine\",",
-    "`   \"code_postal\": \"69007\"",
-    "` }",
-])
-
-content("Exercice · Étapes 1 à 3", "Recevoir la demande", [
-    "**1.  Nouveau workflow « Demande artisan v1 », trigger Webhook en POST.",
-    "**2.  Clique sur écouter, puis envoie la demande de test depuis un",
-    "**     second workflow : HTTP Request, POST, URL de test, body JSON.",
+content("Théorie · Airtable dans n8n", None, [
+    "**Accès : un Personal Access Token, limité à ta base.",
+    "**Le nœud : Base → Table → opération Create, puis le mapping champ par champ.",
     "",
-    "**3.  Lis l'OUTPUT du Webhook : où se trouve « type_travaux » ?",
+    "**Les pièges : une date au format ISO, un Statut qui existe déjà",
+    "**dans la liste d'options (sinon Airtable refuse la ligne).",
+    "` {{ $now.toISO() }}",
 ])
 
-content("Exercice · Étapes 4 à 6", "Nettoyer et trier", [
-    "**4.  Edit Fields : nom, metier, description, code_postal. Rien d'autre.",
-    "**5.  Switch : plomberie (0), électricité (1), fallback « à qualifier ».",
-    "**6.  Un Edit Fields par sortie : le message à renvoyer au client.",
+content("Pratique · Enregistrer la demande", None, [
+    "**1.  Branche « dans la zone » → Airtable, Create record.",
+    "**2.  Mappe les champs propres de ton Edit Fields.",
+    "**3.  Statut = « nouveau », Date de la demande = maintenant.",
     "",
-    "Teste les 3 cas en changeant « type_travaux » dans ta demande de test.",
+    "**4.  Branche « hors zone » : selon ta décision du bloc 4.",
+    "**5.  Vérifie la ligne dans Airtable, pas seulement dans n8n.",
 ])
 
-content("Exercice · Étapes 7 et 8", "Répondre et passer en production", [
-    "**7.  Respond to Webhook : « Merci, votre demande est bien reçue ».",
-    "**     (dans le Webhook : réponse via le nœud Respond to Webhook)",
+# ── 6. Les deux mails ────────────────────────────────────────────────────────
+tia.slide_section(prs, "6", "Les deux mails", "Répondre vite, c'est ce qui fait gagner le chantier")
+
+content("Théorie · Les expressions", "Un texte qui change selon la demande", [
+    "` Bonjour {{ $json.nom }}, nous avons bien reçu votre demande.",
     "",
-    "**8.  Active le workflow, remplace l'URL de test par celle de production.",
-    "Regarde le résultat dans l'onglet Executions, comme dans le quiz.",
-])
-
-content("Si on a le temps", "Un aperçu de la suite", [
-    "**Ajouter un nœud IA sur la branche plomberie :",
-    "**« Rédige un brouillon de devis à partir de cette description. »",
+    "**Une phrase qui change : condition ? si vrai : si faux",
+    "` {{ $json.type == 'Plomberie' ? 'Un plombier' : 'Un artisan' }}",
+    "`   vous rappelle sous 24 h.",
     "",
-    "C'est la brique « devis IA » de ton offre. On la creuse ensuite.",
+    "**Tout le message change selon le type : un Switch, un mail par sortie.",
 ])
 
-# ── 5. Les devoirs ───────────────────────────────────────────────────────────
-tia.slide_section(prs, "5", "Les devoirs", "Pour la séance 2")
+content("Pratique · Accusé de réception et notification", None, [
+    "**1.  Gmail au prospect : son nom, ses travaux, le délai de rappel.",
+    "**2.  Gmail à l'artisan : nom, téléphone, code postal, type, description.",
+    "",
+    "**3.  Relis-les : un artisan accepterait-il qu'ils partent à son nom ?",
+    "Pour la démo, tout part de ton Gmail. Le vrai expéditeur : séance 2.",
+])
+
+# ── 7. Test réel ─────────────────────────────────────────────────────────────
+tia.slide_section(prs, "7", "Le test réel", "On remplit le formulaire comme un vrai client")
+
+content("Théorie · Activer le workflow", None, [
+    "**Inactif : seule l'URL de test marche, et seulement quand tu écoutes.",
+    "**Actif : l'URL de production tourne seule, jour et nuit.",
+    "",
+    "**Chaque passage laisse une trace dans l'onglet Executions.",
+    "C'est là que tu iras voir si un artisan te dit « j'ai rien reçu ».",
+])
+
+content("Pratique · De bout en bout", None, [
+    "**1.  Active le workflow.",
+    "**2.  Dans Tally, remplace l'URL de test par celle de production.",
+    "**3.  Remplis le formulaire depuis ton téléphone, comme un client.",
+    "",
+    "**4.  Vérifie : Executions en vert, la ligne Airtable, les deux mails.",
+    "**Ta démo est prête à être montrée.",
+])
+
+tia.slide_recap(prs, "Le workflow « Demandes »", [
+    "1.  Tally appelle l'URL de production du Webhook.",
+    "2.  Edit Fields va chercher chaque réponse dans data.fields.",
+    "3.  Le Switch trie par zone, le fallback attrape le hors zone.",
+    "4.  Airtable enregistre la demande : statut « nouveau » et date.",
+    "5.  Gmail répond au prospect et prévient l'artisan.",
+])
+
+# ── 8. Relance J+3 et devoirs ────────────────────────────────────────────────
+tia.slide_section(prs, "8", "La relance J+3", "Le deuxième workflow, à construire seul")
+
+pipeline("Le workflow « Relances »", "Il ne réagit à rien : il se réveille chaque matin", [
+    "Schedule\nchaque matin, 9h",
+    "Airtable Search\nfiltre par formule",
+    "Gmail\nrelance du prospect",
+    "Airtable Update\nstatut « relancé »",
+], "Le statut change : la ligne sort du filtre. Pas de double relance.")
+
+content("La formule du filtre", "Dans le champ « Filter By Formula » du nœud Airtable", [
+    "` AND({Statut} = \"devis envoyé\", {Date devis envoyé},",
+    "`     DATETIME_DIFF(TODAY(), {Date devis envoyé}, 'days') >= 3)",
+    "",
+    "**Pourquoi pas le nœud Airtable Trigger ? Il réagit à une ligne créée",
+    "**ou modifiée. Le temps qui passe ne modifie aucune ligne.",
+    "La ligne passe à « relancé » : elle ne sera plus relancée.",
+])
 
 content("Devoirs · avant la séance 2", None, [
-    "**1.  Vidéos n8n, dans cet ordre : Variables, JSON et mapping,",
-    "**     puis Conditions (IF, Switch, Filter), puis HTTP Request et Webhooks",
-    "**2.  Refaire « Demande artisan v1 » de zéro, seul, sans IA ni notes,",
-    "**     avec un 3e métier en plus",
+    "**1.  Construire « Relances » et le tester avec une fausse ligne",
+    "**     dont la date d'envoi du devis est il y a 4 jours.",
+    "**2.  Créer « Erreurs » (Error Trigger → mail) et le choisir comme",
+    "**     Error Workflow dans les Settings de « Demandes ».",
     "",
-    "**3.  M'envoyer ton brief artisans sur idris@the-intelligence-academy.com",
-    "**4.  Écrire à Antoine pour débloquer les modules Cursor et Claude Code",
-])
-
-content("Le brief artisans", "Une page, pour construire le devis IA", [
-    "**1 métier d'artisan cible pour commencer (plombier, électricien...).",
-    "**Les champs d'une demande : ce que le client doit remplir.",
-    "",
-    "**Ce que contient un devis : postes, unités, prix, TVA, mentions.",
-    "**Un exemple de devis, réel ou fictif.",
+    "**3.  Finir le module n8n : les 3 vidéos qui restent.",
+    "**4.  Relancer Antoine pour débloquer les modules verrouillés.",
 ])
 
 tia.slide_questions(prs)
