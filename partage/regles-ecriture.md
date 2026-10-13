@@ -32,6 +32,8 @@
 - Quand une recherche sert à étayer une position d'Idris, chercher aussi ce qui la contredit, pour qu'il ne publie rien de faux.
 - Attribuer les faits dans le texte ("according to X", "Y's pricing page says").
 - Garder la liste des sources réellement consultées (nom et URL) pour le résumé final.
+- Une indisponibilité ("pas disponible en France", "réservé à tel forfait") change vite : sans source primaire datée de moins d'un mois ou test réel, ne pas l'écrire comme un fait dans un livrable, mais la poser comme point à vérifier.
+- Pour un sujet outillé (formation, séance), couvrir aussi les fonctions IA des outils que la personne utilise déjà (par exemple Canva AI pour une utilisatrice de Canva), pas seulement les outils nouveaux.
 
 ## Sujets sensibles et droit d'auteur
 
