@@ -16,6 +16,7 @@
 - **Aucun tiret long**, ni tiret cadratin (U+2014) ni demi-cadratin (U+2013), nulle part : textes, titres, hashtags, légendes, sources, résumés dans le chat. Utiliser une virgule, deux-points, un point ou des parenthèses. Le trait d'union simple dans les mots composés est normal. (Idris refuse les tirets cadratins : c'est aussi un marqueur de texte écrit par une IA.)
 - Guillemets droits ou courbes cohérents dans un même texte, apostrophes normales.
 - Dans un champ destiné à être collé tel quel : aucun commentaire de Claude ("Here's your post", notes, versions alternatives), uniquement le contenu.
+- En français, « skill » est masculin : un skill, le skill, ton premier skill, les skills activés. Les accords et les pronoms suivent (« il se déclenche », « le corriger »).
 
 ## Fiabilité
 
